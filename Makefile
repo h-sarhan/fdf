@@ -6,14 +6,14 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/28 01:10:24 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/28 01:56:14 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 MATH_SRC = matrix_operations.c matrix_transformations.c vector_arithmetic.c vector_operations.c
 MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
-PARSING_SRC = parse_map.c
+PARSING_SRC = parse_map.c hextoi.c
 PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 
 SRC := $(MATH_SRC) $(PARSING_SRC) main.c
@@ -22,9 +22,9 @@ SRC := $(addprefix src/, $(SRC))
 OBJ_DIR = .obj
 OBJ := $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 DEPENDS := $(OBJ:.o=.d)
+LIBFT = libft/libft.a
 
 NAME = fdf
-
 OS := $(shell uname)
 CC = gcc
 ifeq ($(OS),Linux)
@@ -40,7 +40,7 @@ else
 endif
 
 
-CFLAGS = -Wall -Wextra -Werror -march=native -g3 -pthread $(INC) \
+CFLAGS = -Wall -Wextra -march=native -g3 -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
 			# -fsanitize=address\
 

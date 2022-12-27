@@ -6,13 +6,15 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 01:10:11 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 01:45:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
+# include <stdbool.h>
+# include <fcntl.h>
 # include "libft.h"
 # define PI 3.14159265359
 # define RAD_TO_DEG 57.2957795131
@@ -28,6 +30,15 @@ struct s_vector
 };
 
 typedef float	t_mat4[4][4];
+
+typedef struct s_fdf	t_fdf;
+struct s_fdf
+{
+	t_vector	*points;
+	int			*colors;
+};
+
+
 void	mat_multiply(t_mat4 *res, const t_mat4 *m1, const t_mat4 *m2);
 void	mat_vec_multiply(t_vector *res, const t_mat4 *mat,
 			const t_vector *vec);
@@ -48,6 +59,7 @@ void	negate_vec(t_vector *res, const t_vector *v);
 float	vec_magnitude(const t_vector *vec);
 void	normalize_vec(t_vector *vec);
 float	dot_product(const t_vector *v1, const t_vector *v2);
+void	parse_map(t_fdf *fdf, int fd);
 
 
 #endif

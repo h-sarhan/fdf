@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 13:53:09 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/26 10:05:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 01:49:38 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <unistd.h>
 # include "libft.h"
 
-# define BUFFER_SIZE 4096
+# define BUFFER_SIZE 1
 
 char	*get_next_line(int fd);
 char	*ft_gnl_strjoin(char *s1, char *s2);
