@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsarhan <hassanAsarhan@outlook.com>        +#+  +:+       +#+        */
+/*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 10:23:07 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/05/16 14:52:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/23 12:15:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 # include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
-
-# define SIZET_MAX 18446744073709551615UL 
-# define INT_MIN -2147483648 
-# define INT_MAX 2147483647
+# include <limits.h>
+# include <stdint.h>
+# include <math.h>
+# include <stdbool.h>
+# include "get_next_line.h"
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -52,8 +53,17 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 int		ft_atoi(const char *str);
+long	ft_atol(const char *str, bool *check);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
+double	ft_atof(const char *str, bool *success);
+char	**ft_split_whitespace(char const *s);
+int		ft_strcmp(const char *s1, const char *s2);
+int		is_space(char c);
+int		ft_strcmp_case(const char *s1, const char *s2);
+void	ft_swap(int *a, int *b);
+void	ft_swapd(float *a, float *b);
+
 
 typedef struct s_list
 {
@@ -70,5 +80,8 @@ void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+
+char	*get_next_line(int fd);
+char	*ft_gnl_strjoin(char *s1, char *s2);
 
 #endif
