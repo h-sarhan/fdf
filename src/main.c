@@ -6,21 +6,15 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 22:37:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/29 01:02:33 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	my_mlx_pixel_put(int x, int y, int color, t_fdf *fdf)
-{
-	char	*dst;
-
-	if (x < 0 || y < 0 || x >= SCREEN_W || y >= SCREEN_H)
-		return ;
-	dst = fdf->addr + (y * fdf->line_size + x * fdf->bpp);
-	*(unsigned int *)dst = color;
-}
+void look_at(t_mat4 *view_mat);
+void	mat_vec_multiply2(t_vector *res, const t_mat4 *mat,
+			const t_vector *vec);
 
 void	draw_points(t_fdf *fdf)
 {
@@ -97,6 +91,7 @@ int	main(int argc, char **argv)
 	translate_matrix(&fdf.translation, SCREEN_W / 2 , SCREEN_H / 2, 0);
 	
 	t_mat4	projection;	
+	identity_matrix(&projection);
 	rotation_matrix_z(&projection, -45 * DEG_TO_RAD);
 	mat_multiply(&fdf.orientation, &projection, &fdf.orientation);
 	rotation_matrix_x(&projection, 35.264 * DEG_TO_RAD);

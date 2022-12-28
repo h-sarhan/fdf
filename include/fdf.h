@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 22:34:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 22:46:16 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,8 @@ struct s_point
 };
 
 #define ROT_SPEED 5
-#define MOVE_SPEED 10
-#define ZOOM_SPEED 0.05
+#define MOVE_SPEED 7
+#define ZOOM_SPEED 0.1
 typedef float			t_mat4[4][4];
 
 typedef struct s_fdf	t_fdf;

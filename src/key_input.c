@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 19:30:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 21:12:53 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/29 00:53:30 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,27 @@ int render_loop(t_fdf *fdf)
 {
 	t_mat4  mat;
 	if (fdf->keys.plus == true)
-	{
 		fdf->scale += ZOOM_SPEED;
-	}
 	if (fdf->keys.minus == true)
-	{
 		fdf->scale -= ZOOM_SPEED;
-	}
 	if (fdf->keys.w == true)
 	{
 		translate_matrix(&mat, 0, -MOVE_SPEED, 0);
+		mat_multiply(&fdf->translation, &mat, &fdf->translation);
+	}
+	if (fdf->keys.s == true)
+	{
+		translate_matrix(&mat, 0, MOVE_SPEED, 0);
+		mat_multiply(&fdf->translation, &mat, &fdf->translation);
+	}
+	if (fdf->keys.q == true)
+	{
+		translate_matrix(&mat, 0, 0, MOVE_SPEED);
+		mat_multiply(&fdf->translation, &mat, &fdf->translation);
+	}
+	if (fdf->keys.e == true)
+	{
+		translate_matrix(&mat, 0, 0, -MOVE_SPEED);
 		mat_multiply(&fdf->translation, &mat, &fdf->translation);
 	}
 	if (fdf->keys.a == true)
@@ -84,11 +95,6 @@ int render_loop(t_fdf *fdf)
 	if (fdf->keys.d == true)
 	{
 		translate_matrix(&mat, MOVE_SPEED, 0, 0);
-		mat_multiply(&fdf->translation, &mat, &fdf->translation);
-	}
-	if (fdf->keys.s == true)
-	{
-		translate_matrix(&mat, 0, MOVE_SPEED, 0);
 		mat_multiply(&fdf->translation, &mat, &fdf->translation);
 	}
 	if (fdf->keys.right == true)
@@ -113,7 +119,7 @@ int render_loop(t_fdf *fdf)
 	}
 	if (fdf->keys.w || fdf->keys.a || fdf->keys.s || fdf->keys.d
 		|| fdf->keys.left || fdf->keys.right || fdf->keys.up
-		|| fdf->keys.down || fdf->keys.minus || fdf->keys.plus)
+		|| fdf->keys.down || fdf->keys.minus || fdf->keys.plus || fdf->keys.q || fdf->keys.e)
 	{
 		ft_bzero(fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
 		calculate_transforms(fdf);
