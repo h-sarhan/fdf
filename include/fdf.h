@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 22:46:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/29 01:56:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ void	parse_map(t_fdf *fdf, int fd);
 void	resize_points(t_fdf *fdf, size_t new_size);
 void	skip_whitespace(char *buffer, int fd, int *idx);
 
-void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int color);
+void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2);
 
 void	calculate_transforms(t_fdf *fdf);
 int		key_press(int key, t_fdf *fdf);

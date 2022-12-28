@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/29 01:02:33 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/29 01:56:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,18 @@ void	draw_points(t_fdf *fdf)
 	{
 		for (int j = 0; j < fdf->max_x; j++)	
 		{
-			int color = fdf->colors[fdf->points[i * fdf->max_x + j].color_idx];
+			int c1 = fdf->colors[fdf->points[i * fdf->max_x + j].color_idx];
 			if (j + 1 < fdf->max_x)
 			{
+				int c2 = fdf->colors[fdf->points[i * fdf->max_x + j + 1].color_idx];
 				dda(fdf, fdf->points[i * fdf->max_x + j].x, fdf->points[i * fdf->max_x + j + 1].x, 
-					fdf->points[i * fdf->max_x + j].y, fdf->points[i * fdf->max_x + j + 1].y, color);
+					fdf->points[i * fdf->max_x + j].y, fdf->points[i * fdf->max_x + j + 1].y, c1, c2);
 			}
 			if (i + 1 < fdf->max_y)
 			{
+				int c2 = fdf->colors[fdf->points[(i + 1) * fdf->max_x + j].color_idx];
 				dda(fdf, fdf->points[i * fdf->max_x + j].x, fdf->points[(i + 1) * fdf->max_x + j].x, 
-					fdf->points[i * fdf->max_x + j].y, fdf->points[(i + 1) * fdf->max_x + j].y, color);
+					fdf->points[i * fdf->max_x + j].y, fdf->points[(i + 1) * fdf->max_x + j].y, c1, c2);
 			}
 		}
 	}
