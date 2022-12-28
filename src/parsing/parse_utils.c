@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 04:57:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 14:47:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 15:26:15 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	resize_points(t_fdf *fdf, size_t new_size)
 	fdf->max_size = new_size;
 }
 
-void	skip_whitespace(char *buffer, int fd, int *idx)
+void	skip_whitespace(t_fdf *fdf, char *buffer, int fd, int *idx)
 {
 	while (*idx != -1)
 	{
 		while (buffer[*idx] != '\0')
 		{
-			if (is_space(buffer[*idx]) == false && buffer[*idx] != '\n')
+			if (is_space(buffer[*idx]) == false)
 				return ;
 			*idx += 1;
 		}

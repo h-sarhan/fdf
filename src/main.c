@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 14:41:19 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 15:29:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	print_points(t_fdf *fdf)
 {
-	printf("\nHeight: %u\n", fdf->height);
-	printf("Width: %u\n", fdf->width);
+	printf("\nHeight: %u\n", fdf->max_y);
+	printf("Width: %u\n", fdf->max_x);
 }
 
 int	main(int argc, char **argv)
@@ -25,7 +25,10 @@ int	main(int argc, char **argv)
 
 	ft_bzero(&fdf, sizeof(t_fdf));
 	fdf.max_size = MAX_POINT_COUNT;
+	fdf.max_z = INT16_MIN;
+	fdf.min_z = INT16_MAX;
 	fdf.colors[0] = 0xffffff;
+	identity_matrix(&fdf.transform_mat);
 	if (argc != 2)
 	{
 		exit(1);
@@ -44,6 +47,7 @@ int	main(int argc, char **argv)
 		exit(!printf("FAILED TO MALLOC\n"));
 	close(fd);
 	resize_points(&fdf, fdf.point_count);
+	// draw_points(&fdf);
 	print_points(&fdf);
 	free(fdf.points);
 }

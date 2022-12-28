@@ -1,6 +1,7 @@
 {
 	"files.associations": {
 		"*.c": "c",
-		"fdf.h": "c"
+		"fdf.h": "c",
+		"type_traits": "c"
 	}
 }

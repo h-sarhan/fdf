@@ -6,13 +6,13 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 22:38:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 14:40:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 15:30:20 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-short	read_height(char *buffer, int fd, int *idx)
+int16_t	read_height(char *buffer, int fd, int *idx)
 {
 	char	sign;
 	short	num;
@@ -96,11 +96,15 @@ void	next_point(char *buffer, int *idx, t_fdf *fdf)
 	{
 		if (buffer[*idx] == '\n')
 		{
-			fdf->height++;
-			if (fdf->width == 0)
-				fdf->width = fdf->point_count;
+			fdf->max_y++;
+			if (fdf->max_x == 0)
+				fdf->max_x = fdf->point_count;
+			if (fdf->points[fdf->point_count].height > fdf->max_z)
+				fdf->max_z = fdf->points[fdf->point_count].height;
+			if (fdf->points[fdf->point_count].height < fdf->min_z)
+				fdf->min_z = fdf->points[fdf->point_count].height;
 		}
-		if (is_space(buffer[*idx]))
+		if (!is_space(buffer[*idx]))
 			break ;
 		*idx += 1;
 	}
@@ -115,7 +119,7 @@ void	parse_map(t_fdf *fdf, int fd)
 	i = 0;
 	while (1)
 	{
-		skip_whitespace(buffer, fd, &i);
+		skip_whitespace(fdf, buffer, fd, &i);
 		if (i == -1)
 			return ;
 		fdf->points[fdf->point_count].height = read_height(buffer, fd, &i);
