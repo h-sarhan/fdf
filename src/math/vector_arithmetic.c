@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:46:11 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 00:56:00 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 21:20:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	add_vec(t_vector *res, const t_vector *v1, const t_vector *v2)
 	res->x = v1->x + v2->x;
 	res->y = v1->y + v2->y;
 	res->z = v1->z + v2->z;
-	res->w = v1->w + v2->w;
 }
 
 /**
@@ -37,7 +36,6 @@ void	sub_vec(t_vector *res, const t_vector *v1, const t_vector *v2)
 	res->x = v1->x - v2->x;
 	res->y = v1->y - v2->y;
 	res->z = v1->z - v2->z;
-	res->w = v1->w - v2->w;
 }
 
 /**
@@ -51,7 +49,6 @@ void	scale_vec(t_vector *res, const t_vector *v, float scale)
 	res->x = scale * v->x;
 	res->y = scale * v->y;
 	res->z = scale * v->z;
-	res->w = scale * v->w;
 }
 
 /**
@@ -64,5 +61,4 @@ void	negate_vec(t_vector *res, const t_vector *v)
 	res->x = -1 * v->x;
 	res->y = -1 * v->y;
 	res->z = -1 * v->z;
-	res->w = -1 * v->w;
 }

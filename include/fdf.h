@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 20:44:45 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 21:21:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ struct s_vector
 	float	x;
 	float	y;
 	float	z;
-	float	w;
 };
 
 typedef struct s_point	t_point;
@@ -200,7 +199,7 @@ int		read_color(char *buffer, int fd, int *idx);
 
 void	parse_map(t_fdf *fdf, int fd);
 void	resize_points(t_fdf *fdf, size_t new_size);
-void	skip_whitespace(t_fdf *fdf, char *buffer, int fd, int *idx);
+void	skip_whitespace(char *buffer, int fd, int *idx);
 
 void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int color);
 

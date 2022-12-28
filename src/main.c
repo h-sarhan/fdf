@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 20:47:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 21:20:48 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ void	draw_points(t_fdf *fdf)
 	t_vector	vec;
 	t_vector	p1;
 	t_vector	p2;
-	t_vector	p3;
 
-	ft_bzero(fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
 	for (int i = 0; i < fdf->max_y; i++)
 	{
 		for (int j = 0; j < fdf->max_x - 1; j++)
@@ -37,12 +35,10 @@ void	draw_points(t_fdf *fdf)
 			vec.x = j;
 			vec.y = i;
 			vec.z = fdf->points[i * fdf->max_x + j].height;
-			vec.w = 1;
 			mat_vec_multiply(&p1, &fdf->transform_mat, &vec);
 			vec.x = j + 1;
 			vec.y = i;
 			vec.z = fdf->points[i * fdf->max_x + j + 1].height;
-			vec.w = 1;
 			mat_vec_multiply(&p2, &fdf->transform_mat, &vec);
 			int color = fdf->points[i * fdf->max_x + j + 1].color_idx;
 			color = fdf->colors[color];
@@ -56,12 +52,10 @@ void	draw_points(t_fdf *fdf)
 			vec.x = j;
 			vec.y = i;
 			vec.z = fdf->points[i * fdf->max_x + j].height;
-			vec.w = 1;
 			mat_vec_multiply(&p1, &fdf->transform_mat, &vec);
 			vec.x = j;
 			vec.y = i + 1;
 			vec.z = fdf->points[(i + 1) * fdf->max_x + j].height;
-			vec.w = 1;
 			mat_vec_multiply(&p2, &fdf->transform_mat, &vec);
 			int color = fdf->points[i * fdf->max_x + j + 1].color_idx;
 			color = fdf->colors[color];
@@ -69,8 +63,8 @@ void	draw_points(t_fdf *fdf)
 		}
 	}
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
-	ft_memcpy(fdf->addr2, fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
-	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img2, 0, 0);
+	// ft_memcpy(fdf->addr2, fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
+	// mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img2, 0, 0);
 }
 
 int	main(int argc, char **argv)
@@ -93,6 +87,7 @@ int	main(int argc, char **argv)
 		printf("FAILED TO OPEN\n");
 		exit(1);
 	}
+
 	fdf.points = malloc(MAX_POINT_COUNT * sizeof(t_point));
 	if (fdf.points == NULL)
 		exit(!printf("FAILED TO MALLOC\n"));
@@ -121,9 +116,9 @@ int	main(int argc, char **argv)
 	fdf.img = mlx_new_image(fdf.mlx, SCREEN_W, SCREEN_H);
 	fdf.addr = mlx_get_data_addr(fdf.img, &fdf.bpp, &fdf.line_size, &fdf.endian);
 	fdf.bpp /= 8;
-	fdf.img2 = mlx_new_image(fdf.mlx, SCREEN_W, SCREEN_H);
-	fdf.addr2 = mlx_get_data_addr(fdf.img2, &fdf.bpp, &fdf.line_size, &fdf.endian);
-	fdf.bpp /= 8;
+	// fdf.img2 = mlx_new_image(fdf.mlx, SCREEN_W, SCREEN_H);
+	// fdf.addr2 = mlx_get_data_addr(fdf.img2, &fdf.bpp, &fdf.line_size, &fdf.endian);
+	// fdf.bpp /= 8;
 	
 	draw_points(&fdf);
 	mlx_hook(fdf.win, 2, (1L << 0), key_press, &fdf);

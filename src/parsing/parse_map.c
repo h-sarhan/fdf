@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 22:38:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 19:52:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 21:21:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	parse_map(t_fdf *fdf, int fd)
 	i = 0;
 	while (1)
 	{
-		skip_whitespace(fdf, buffer, fd, &i);
+		skip_whitespace(buffer, fd, &i);
 		if (i == -1)
 			return ;
 		fdf->points[fdf->point_count].height = read_height(buffer, fd, &i);
