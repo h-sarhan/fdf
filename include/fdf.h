@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 16:59:50 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 18:38:05 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,14 @@
 # define RAD_TO_DEG 57.2957795131
 # define DEG_TO_RAD 0.01745329251
 # define MAX_POINT_COUNT 3000
+# include "mlx.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 100000
 # endif
+
+#define SCREEN_W 1280
+#define SCREEN_H 720
 
 typedef struct s_vector	t_vector;
 struct s_vector
@@ -57,6 +61,13 @@ struct s_fdf
 	uint8_t	num_colors;
 	t_mat4	transform_mat;
 	float	scale;
+	void	*mlx;
+	void	*win;
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_size;
+	int		endian;
 };
 
 void	mat_multiply(t_mat4 *res, const t_mat4 *m1, const t_mat4 *m2);
@@ -83,6 +94,7 @@ void	parse_map(t_fdf *fdf, int fd);
 void	resize_points(t_fdf *fdf, size_t new_size);
 void	skip_whitespace(t_fdf *fdf, char *buffer, int fd, int *idx);
 
+void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int color);
 
 void	calculate_transforms(t_fdf *fdf);
 

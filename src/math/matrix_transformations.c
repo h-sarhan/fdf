@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/28 16:38:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 18:37:07 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,14 +117,20 @@ void	calculate_transforms(t_fdf *fdf)
 	t_mat4	translate_origin;
 	t_mat4	projection;
 
+	fdf->scale = 0.7;
 	translate_matrix(&translate_origin, -fdf->max_x / 2.0, -fdf->max_y / 2.0, 0);
+	mat_multiply(&fdf->transform_mat, &translate_origin, &fdf->transform_mat);
 	scaling_matrix(&scale_mat, fdf->scale, fdf->scale, fdf->scale);
-	// identity_matrix(&scale_mat);
-	mat_multiply(&fdf->transform_mat, &scale_mat, &translate_origin);
+	mat_multiply(&fdf->transform_mat, &scale_mat, &fdf->transform_mat);
 	rotation_matrix_z(&projection, 45 * DEG_TO_RAD);
 	mat_multiply(&fdf->transform_mat, &projection, &fdf->transform_mat);
-	rotation_matrix_x(&projection, asin(tan(30 * DEG_TO_RAD)));
+	rotation_matrix_x(&projection, 35.264 * DEG_TO_RAD);
 	mat_multiply(&fdf->transform_mat, &projection, &fdf->transform_mat);
-	translate_matrix(&translate_origin, fdf->max_x * fdf->scale / 2.0, fdf->max_y * fdf->scale / 2.0, 0);
+	translate_matrix(&translate_origin, fdf->max_x * fdf->scale / 2, fdf->max_y * fdf->scale / 2, 0);
 	mat_multiply(&fdf->transform_mat, &translate_origin, &fdf->transform_mat);
+	
+	
+	
+
+	
 }

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 04:57:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 16:57:28 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 18:30:34 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ uint8_t	add_color(t_fdf *fdf, char *buffer, int fd, int *idx)
 	uint8_t			i;
 
 	color = read_color(buffer, fd, idx);
-	i = 0;
-	while (i < fdf->num_colors)
+	i = 1;
+	while (i < fdf->num_colors + 1)
 	{
 		if (fdf->colors[i] == color)
 			return (i);
 		i++;
 	}
-	fdf->colors[fdf->num_colors] = color;
+	fdf->colors[fdf->num_colors + 1] = color;
 	fdf->num_colors++;
 	return (i);
 }

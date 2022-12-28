@@ -6,17 +6,20 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/28 16:10:17 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/28 17:42:21 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 MATH_SRC = matrix_operations.c matrix_transformations.c vector_arithmetic.c vector_operations.c
 MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
+LINE_DRAWING_SRC = line_drawing.c
+LINE_DRAWING_SRC := $(addprefix line_drawing/, $(LINE_DRAWING_SRC))
+
 PARSING_SRC = parse_map.c parse_utils.c
 PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 
-SRC := $(MATH_SRC) $(PARSING_SRC) main.c
+SRC := $(MATH_SRC) $(PARSING_SRC) $(LINE_DRAWING_SRC) main.c
 SRC := $(addprefix src/, $(SRC))
 
 OBJ_DIR = .obj
@@ -28,7 +31,7 @@ NAME = fdf
 OS := $(shell uname)
 CC = gcc
 ifeq ($(OS),Linux)
-	INC = -Iinclude -Ilibft -Imlx -I/usr/include -Imlx_linux
+	INC = -Iinclude -Ilibft  -I/usr/include -Imlx_linux
 	OPTIMIZATION_FLAGS = -O3 -march=native -flto -fno-signed-zeros -funroll-loops
 	LINK_FLAGS = -Lmlx_linux -lmlx -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 	MLX = mlx_linux
@@ -41,7 +44,8 @@ endif
 
 
 CFLAGS = -Wall -Wextra -march=native -g3 -pthread $(INC) \
-			$(OPTIMIZATION_FLAGS) \
+			# $(OPTIMIZATION_FLAGS) \
+			
 
 all:
 	# @make -j20 $(NAME)
