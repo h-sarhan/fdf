@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 13:24:14 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 14:47:22 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,11 @@
 # define PI 3.14159265359
 # define RAD_TO_DEG 57.2957795131
 # define DEG_TO_RAD 0.01745329251
-# define MAX_POINT_COUNT 1000
+# define MAX_POINT_COUNT 300000
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10000
+#  define BUFFER_SIZE 100000
 # endif
-typedef enum e_parse_phase	t_parse_phase;
-enum	e_parse_phase
-{
-	HEIGHT,
-	COLOR,
-	WHITESPACE,
-	NEW_LINE,
-};
 
 typedef struct s_vector	t_vector;
 struct s_vector
@@ -45,29 +37,28 @@ struct s_vector
 typedef struct s_point	t_point;
 struct s_point
 {
-	int		color;
-	short	height;
+	int16_t	height;
+	uint8_t	color_idx;
 };
 
-typedef float	t_mat4[4][4];
+typedef float			t_mat4[4][4];
 
 typedef struct s_fdf	t_fdf;
 struct s_fdf
 {
-	t_point	*points;
-	size_t	point_count;
-	size_t	max_size;
-	size_t	width;
-	size_t	height;
-	int		theme;
+	t_point		*points;
+	int			colors[256];
+	uint32_t	point_count;
+	uint32_t	max_size;
+	uint32_t	width;
+	uint32_t	height;
+	uint8_t		num_colors;
 };
-
 
 void	mat_multiply(t_mat4 *res, const t_mat4 *m1, const t_mat4 *m2);
 void	mat_vec_multiply(t_vector *res, const t_mat4 *mat,
 			const t_vector *vec);
 void	identity_matrix(t_mat4 *mat);
-void	transpose_matrix(t_mat4 *mat);
 void	translate_matrix(t_mat4 *mat, float x, float y, float z);
 void	scaling_matrix(t_mat4 *mat, float x, float y, float z);
 void	rotation_matrix_x(t_mat4 *mat, float r);
@@ -81,8 +72,11 @@ float	vec_magnitude(const t_vector *vec);
 void	normalize_vec(t_vector *vec);
 float	dot_product(const t_vector *v1, const t_vector *v2);
 
+uint8_t	add_color(t_fdf *fdf, char *buffer, int fd, int *idx);
+int		read_color(char *buffer, int fd, int *idx);
+
 void	parse_map(t_fdf *fdf, int fd);
-void	resize_points(t_fdf *fdf);
+void	resize_points(t_fdf *fdf, size_t new_size);
 void	skip_whitespace(char *buffer, int fd, int *idx);
 
 #endif

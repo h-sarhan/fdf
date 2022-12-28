@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 22:38:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 12:45:10 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 14:40:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ int	read_color(char *buffer, int fd, int *idx)
 
 void	next_point(char *buffer, int *idx, t_fdf *fdf)
 {
+	if (*idx == -1)
+		return ;
 	while (*idx < BUFFER_SIZE)
 	{
 		if (buffer[*idx] == '\n')
@@ -119,12 +121,13 @@ void	parse_map(t_fdf *fdf, int fd)
 		fdf->points[fdf->point_count].height = read_height(buffer, fd, &i);
 		if (i == -1)
 			return ;
-		fdf->points[fdf->point_count].color = fdf->theme;
+		fdf->points[fdf->point_count].color_idx = 0;
 		if (buffer[i] == ',')
-			fdf->points[fdf->point_count].color = read_color(buffer, fd, &i);
+			fdf->points[fdf->point_count].color_idx = add_color(fdf,
+					buffer, fd, &i);
 		fdf->point_count++;
 		if (fdf->point_count >= fdf->max_size)
-			resize_points(fdf);
+			resize_points(fdf, fdf->max_size * 2);
 		if (fdf->points == NULL)
 			return ;
 		next_point(buffer, &i, fdf);
