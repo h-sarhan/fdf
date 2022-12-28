@@ -18,7 +18,7 @@
 # include <unistd.h>
 # include "libft.h"
 
-# define BUFFER_SIZE 1
+# define BUFFER_SIZE 1024
 
 char	*get_next_line(int fd);
 char	*ft_gnl_strjoin(char *s1, char *s2);

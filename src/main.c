@@ -12,9 +12,23 @@
 
 #include "fdf.h"
 
+
+void	print_points(t_fdf *fdf)
+{
+	for (size_t i = 0; i < fdf->point_count; i++)
+	{
+		printf("%d ", fdf->points[i].height);
+	}
+	printf("\nHeight: %ld\n", fdf->height);
+	printf("Width: %ld\n", fdf->width);
+}
+
 int	main(int argc, char **argv)
 {
 	t_fdf	fdf;
+
+	ft_bzero(&fdf, sizeof(t_fdf));
+	fdf.max_size = MAX_POINT_COUNT;
 	if (argc != 2)
 	{
 		exit(1);
@@ -25,4 +39,7 @@ int	main(int argc, char **argv)
 		printf("FAILED TO OPEN\n");
 	}
 	parse_map(&fdf, fd);
+	close(fd);
+	print_points(&fdf);
+	free(fdf.points);
 }

@@ -38,6 +38,8 @@ static int	get_num_digits(int num)
 	int	num_digits;
 
 	num_digits = 0;
+	if (num == 0)
+		return (1);
 	while (num > 0)
 	{
 		num /= 10;

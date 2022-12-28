@@ -13,14 +13,14 @@
 #include "fdf.h"
 
 // Read a hexadecimal string and return an integer
-unsigned int	hextoi(char *str)
+unsigned int	hextoi(t_fdf *fdf, char *str)
 {
 	unsigned int	num;
 	int				i;
 
 	num = 0;
 	i = 0;
-	while (is_space(str[i]) == true)
+	while (check_space(fdf, str[i]) == true)
 		i++;
 	if (str[i] == '0' && (str[i + 1] == 'x' || str[i + 1] == 'X'))
 		i += 2;

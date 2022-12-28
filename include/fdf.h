@@ -19,6 +19,7 @@
 # define PI 3.14159265359
 # define RAD_TO_DEG 57.2957795131
 # define DEG_TO_RAD 0.01745329251
+# define MAX_POINT_COUNT 50
 
 typedef struct s_vector	t_vector;
 struct s_vector
@@ -29,13 +30,23 @@ struct s_vector
 	float	w;
 };
 
+typedef struct s_point	t_point;
+struct s_point
+{
+	int		color;
+	int		height;
+};
+
 typedef float	t_mat4[4][4];
 
 typedef struct s_fdf	t_fdf;
 struct s_fdf
 {
-	t_vector	*points;
-	int			*colors;
+	t_point	*points;
+	size_t	point_count;
+	size_t	max_size;
+	size_t	width;
+	size_t	height;
 };
 
 
@@ -61,5 +72,6 @@ void	normalize_vec(t_vector *vec);
 float	dot_product(const t_vector *v1, const t_vector *v2);
 void	parse_map(t_fdf *fdf, int fd);
 
+int	check_space(t_fdf *fdf, char c);
 
 #endif
