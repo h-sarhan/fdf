@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 05:37:12 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 11:25:11 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	print_points(t_fdf *fdf)
 {
 	for (size_t i = 0; i < fdf->point_count; i++)
 	{
-		printf("%d ", fdf->points[i].height);
+		if (fdf->points[i].height > 128)
+		{
+			printf("%d ", fdf->points[i].height);
+		}
 	}
 	printf("\nHeight: %ld\n", fdf->height);
 	printf("Width: %ld\n", fdf->width);
@@ -38,9 +41,9 @@ int	main(int argc, char **argv)
 	if (fd == -1)
 	{
 		printf("FAILED TO OPEN\n");
+		exit(1);
 	}
 	parse_map(&fdf, fd);
-	fdf.height = fdf.point_count / fdf.width;
 	close(fd);
 	print_points(&fdf);
 	free(fdf.points);
