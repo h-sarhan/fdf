@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 20:30:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 20:44:45 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,8 @@ struct s_fdf
 	int32_t	max_size;
 	int32_t	max_x;
 	int32_t	max_y;
-	int16_t	max_z;
-	int16_t	min_z;
+	int32_t	max_z;
+	int32_t	min_z;
 	uint8_t	num_colors;
 	t_mat4	transform_mat;
 	t_mat4	cam_transform;

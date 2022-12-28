@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 20:38:19 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 20:47:12 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ void	draw_points(t_fdf *fdf)
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
 	ft_memcpy(fdf->addr2, fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img2, 0, 0);
-	printf("\nHeight: %u\n", fdf->max_y);
-	printf("Width: %u\n", fdf->max_x);
 }
 
 int	main(int argc, char **argv)

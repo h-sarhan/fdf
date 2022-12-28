@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/28 20:22:22 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/28 20:47:56 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ OS := $(shell uname)
 CC = gcc
 ifeq ($(OS),Linux)
 	INC = -Iinclude -Ilibft  -I/usr/include -Imlx_linux
-	OPTIMIZATION_FLAGS = -O3 -march=native -flto -fno-signed-zeros -funroll-loops
+	OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
 	LINK_FLAGS = -Lmlx_linux -lmlx -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 	MLX = mlx_linux
 else
@@ -48,8 +48,7 @@ CFLAGS = -Wall -Wextra -march=native -g3 -pthread $(INC) \
 			
 
 all:
-	# @make -j20 $(NAME)
-	@make  $(NAME)
+	@make -j20 $(NAME)
 
 $(OBJ_DIR)/%.o: %.c 
 	@mkdir -p $(@D)
