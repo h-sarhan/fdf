@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 01:35:34 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 05:37:12 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	main(int argc, char **argv)
 
 	ft_bzero(&fdf, sizeof(t_fdf));
 	fdf.max_size = MAX_POINT_COUNT;
+	fdf.theme = 0xffffff;
 	if (argc != 2)
 	{
 		exit(1);
@@ -39,6 +40,7 @@ int	main(int argc, char **argv)
 		printf("FAILED TO OPEN\n");
 	}
 	parse_map(&fdf, fd);
+	fdf.height = fdf.point_count / fdf.width;
 	close(fd);
 	print_points(&fdf);
 	free(fdf.points);

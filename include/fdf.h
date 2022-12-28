@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 01:45:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 05:09:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ struct s_fdf
 	size_t	max_size;
 	size_t	width;
 	size_t	height;
+	int		theme;
 };
 
 
@@ -70,8 +71,11 @@ void	negate_vec(t_vector *res, const t_vector *v);
 float	vec_magnitude(const t_vector *vec);
 void	normalize_vec(t_vector *vec);
 float	dot_product(const t_vector *v1, const t_vector *v2);
-void	parse_map(t_fdf *fdf, int fd);
 
+void	parse_map(t_fdf *fdf, int fd);
 int	check_space(t_fdf *fdf, char c);
+int	check_space(t_fdf *fdf, char c);
+int	get_height(t_fdf *fdf, const char *buff, int *idx, int fd);
+int	get_color(t_fdf *fdf, const char *buff, int *idx, int fd);
 
 #endif
