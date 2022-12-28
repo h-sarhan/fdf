@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 21:20:48 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 22:37:32 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,42 +24,36 @@ void	my_mlx_pixel_put(int x, int y, int color, t_fdf *fdf)
 
 void	draw_points(t_fdf *fdf)
 {
-	t_vector	vec;
-	t_vector	p1;
-	t_vector	p2;
+	t_vector	point;
+	t_vector	res;
 
 	for (int i = 0; i < fdf->max_y; i++)
 	{
-		for (int j = 0; j < fdf->max_x - 1; j++)
+		for (int j = 0; j < fdf->max_x; j++)	
 		{
-			vec.x = j;
-			vec.y = i;
-			vec.z = fdf->points[i * fdf->max_x + j].height;
-			mat_vec_multiply(&p1, &fdf->transform_mat, &vec);
-			vec.x = j + 1;
-			vec.y = i;
-			vec.z = fdf->points[i * fdf->max_x + j + 1].height;
-			mat_vec_multiply(&p2, &fdf->transform_mat, &vec);
-			int color = fdf->points[i * fdf->max_x + j + 1].color_idx;
-			color = fdf->colors[color];
-			dda(fdf, p1.x, p2.x, p1.y, p2.y, color);
+			point.x = j;
+			point.y = i;
+			point.z = fdf->points[i * fdf->max_x + j].height;
+			mat_vec_multiply(&res, &fdf->transform_mat, &point);
+			fdf->points[i * fdf->max_x + j].x = res.x;
+			fdf->points[i * fdf->max_x + j].y = res.y;
 		}
 	}
-	for (int i = 0; i < fdf->max_y - 1; i++)
+	for (int i = 0; i < fdf->max_y; i++)
 	{
-		for (int j = 0; j < fdf->max_x; j++)
+		for (int j = 0; j < fdf->max_x; j++)	
 		{
-			vec.x = j;
-			vec.y = i;
-			vec.z = fdf->points[i * fdf->max_x + j].height;
-			mat_vec_multiply(&p1, &fdf->transform_mat, &vec);
-			vec.x = j;
-			vec.y = i + 1;
-			vec.z = fdf->points[(i + 1) * fdf->max_x + j].height;
-			mat_vec_multiply(&p2, &fdf->transform_mat, &vec);
-			int color = fdf->points[i * fdf->max_x + j + 1].color_idx;
-			color = fdf->colors[color];
-			dda(fdf, p1.x, p2.x, p1.y, p2.y, color);
+			int color = fdf->colors[fdf->points[i * fdf->max_x + j].color_idx];
+			if (j + 1 < fdf->max_x)
+			{
+				dda(fdf, fdf->points[i * fdf->max_x + j].x, fdf->points[i * fdf->max_x + j + 1].x, 
+					fdf->points[i * fdf->max_x + j].y, fdf->points[i * fdf->max_x + j + 1].y, color);
+			}
+			if (i + 1 < fdf->max_y)
+			{
+				dda(fdf, fdf->points[i * fdf->max_x + j].x, fdf->points[(i + 1) * fdf->max_x + j].x, 
+					fdf->points[i * fdf->max_x + j].y, fdf->points[(i + 1) * fdf->max_x + j].y, color);
+			}
 		}
 	}
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);

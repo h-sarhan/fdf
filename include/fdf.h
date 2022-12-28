@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 21:21:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 22:34:12 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,8 @@ typedef struct s_point	t_point;
 struct s_point
 {
 	int16_t	height;
+	int16_t	x;
+	int16_t	y;
 	uint8_t	color_idx;
 };
 
@@ -208,5 +210,6 @@ int		key_press(int key, t_fdf *fdf);
 int		key_release(int key, t_fdf *fdf);
 int 	render_loop(t_fdf *fdf);
 void	draw_points(t_fdf *fdf);
+void bresenham(t_fdf *fdf, int x0, int x1, int y0, int y1, int color);
 
 #endif
