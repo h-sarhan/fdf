@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/28 12:29:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 16:24:35 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,4 +108,19 @@ void	rotation_matrix_z(t_mat4 *mat, float r)
 	(*mat)[1][1] = c;
 	(*mat)[2][2] = 1;
 	(*mat)[3][3] = 1;
+}
+
+
+void	calculate_transforms(t_fdf *fdf)
+{
+	t_mat4	scale_mat;
+	t_mat4	translate_origin;
+	// t_mat4	identity;
+
+	translate_matrix(&translate_origin, -fdf->max_x / 2.0, -fdf->max_y / 2.0, 0);
+	scaling_matrix(&scale_mat, fdf->scale, fdf->scale, fdf->scale);
+	// identity_matrix(&scale_mat);
+	mat_multiply(&fdf->transform_mat, &scale_mat, &translate_origin);
+	translate_matrix(&translate_origin, fdf->max_x * fdf->scale / 2.0, fdf->max_y * fdf->scale / 2.0, 0);
+	mat_multiply(&fdf->transform_mat, &translate_origin, &fdf->transform_mat);
 }

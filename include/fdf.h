@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 15:28:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 16:15:03 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,17 @@ typedef float			t_mat4[4][4];
 typedef struct s_fdf	t_fdf;
 struct s_fdf
 {
-	t_point		*points;
-	int			colors[256];
-	uint32_t	point_count;
-	uint32_t	max_size;
-	uint32_t	max_x;
-	uint32_t	max_y;
-	int16_t		max_z;
-	int16_t		min_z;
-	uint8_t		num_colors;
-	t_mat4		transform_mat;
+	t_point	*points;
+	int		colors[256];
+	int32_t	point_count;
+	int32_t	max_size;
+	int32_t	max_x;
+	int32_t	max_y;
+	int16_t	max_z;
+	int16_t	min_z;
+	uint8_t	num_colors;
+	t_mat4	transform_mat;
+	float	scale;
 };
 
 void	mat_multiply(t_mat4 *res, const t_mat4 *m1, const t_mat4 *m2);
@@ -81,5 +82,8 @@ int		read_color(char *buffer, int fd, int *idx);
 void	parse_map(t_fdf *fdf, int fd);
 void	resize_points(t_fdf *fdf, size_t new_size);
 void	skip_whitespace(t_fdf *fdf, char *buffer, int fd, int *idx);
+
+
+void	calculate_transforms(t_fdf *fdf);
 
 #endif

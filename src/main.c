@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 15:29:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 16:11:04 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,20 @@
 
 void	print_points(t_fdf *fdf)
 {
+	t_vector	vec;
+	t_vector	transformed;
+
+	for (int i = 0; i < fdf->point_count; i++)
+	{
+		vec.x = i % fdf->max_x;
+		vec.y = i / fdf->max_x;
+		vec.z = fdf->points[i].height;
+		vec.w = 1;
+		mat_vec_multiply(&transformed, &fdf->transform_mat, &vec);
+		printf("x = %.1f, ", transformed.x);
+		printf("y = %.1f, ", transformed.y);
+		printf("z = %.1f\n", transformed.z);
+	}
 	printf("\nHeight: %u\n", fdf->max_y);
 	printf("Width: %u\n", fdf->max_x);
 }
@@ -46,8 +60,9 @@ int	main(int argc, char **argv)
 	if (fdf.points == NULL)
 		exit(!printf("FAILED TO MALLOC\n"));
 	close(fd);
+	fdf.scale = 20;
 	resize_points(&fdf, fdf.point_count);
-	// draw_points(&fdf);
+	calculate_transforms(&fdf);
 	print_points(&fdf);
 	free(fdf.points);
 }
