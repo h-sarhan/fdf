@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:42:19 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 16:19:44 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 20:19:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ void	mat_vec_multiply(t_vector *res, const t_mat4 *mat,
 			vec->z * (*mat)[1][2] + vec->w * (*mat)[1][3];
 	res->z = vec->x * (*mat)[2][0] + vec->y * (*mat)[2][1] + \
 			vec->z * (*mat)[2][2] + vec->w * (*mat)[2][3];
-	res->w = vec->x * (*mat)[3][0] + vec->y * (*mat)[3][1] + \
-			vec->z * (*mat)[3][2] + vec->w * (*mat)[3][3];
 }
 
 /**

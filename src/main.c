@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 18:37:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 20:38:19 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ void	my_mlx_pixel_put(int x, int y, int color, t_fdf *fdf)
 	*(unsigned int *)dst = color;
 }
 
-void	print_points(t_fdf *fdf)
+void	draw_points(t_fdf *fdf)
 {
 	t_vector	vec;
 	t_vector	p1;
 	t_vector	p2;
 	t_vector	p3;
 
-
+	ft_bzero(fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
 	for (int i = 0; i < fdf->max_y; i++)
 	{
 		for (int j = 0; j < fdf->max_x - 1; j++)
@@ -69,6 +69,8 @@ void	print_points(t_fdf *fdf)
 		}
 	}
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
+	ft_memcpy(fdf->addr2, fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
+	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img2, 0, 0);
 	printf("\nHeight: %u\n", fdf->max_y);
 	printf("Width: %u\n", fdf->max_x);
 }
@@ -83,7 +85,6 @@ int	main(int argc, char **argv)
 	fdf.max_z = INT16_MIN;
 	fdf.min_z = INT16_MAX;
 	fdf.colors[0] = 0xffffff;
-	identity_matrix(&fdf.transform_mat);
 	if (argc != 2)
 	{
 		exit(1);
@@ -98,11 +99,22 @@ int	main(int argc, char **argv)
 	if (fdf.points == NULL)
 		exit(!printf("FAILED TO MALLOC\n"));
 	parse_map(&fdf, fd);
+	fdf.max_y = fdf.point_count / fdf.max_x;
 	if (fdf.points == NULL)
 		exit(!printf("FAILED TO MALLOC\n"));
 	close(fd);
 	// fdf.scale = fdf.max;
+	fdf.scale = 2;
 	resize_points(&fdf, fdf.point_count);
+	identity_matrix(&fdf.orientation);
+	translate_matrix(&fdf.translation, SCREEN_W / 2 , SCREEN_H / 2, 0);
+	
+	t_mat4	projection;	
+	rotation_matrix_z(&projection, -45 * DEG_TO_RAD);
+	mat_multiply(&fdf.orientation, &projection, &fdf.orientation);
+	rotation_matrix_x(&projection, 35.264 * DEG_TO_RAD);
+	mat_multiply(&fdf.orientation, &projection, &fdf.orientation);
+
 	calculate_transforms(&fdf);
 	fdf.mlx = mlx_init();
 	if (fdf.mlx == NULL)
@@ -111,7 +123,14 @@ int	main(int argc, char **argv)
 	fdf.img = mlx_new_image(fdf.mlx, SCREEN_W, SCREEN_H);
 	fdf.addr = mlx_get_data_addr(fdf.img, &fdf.bpp, &fdf.line_size, &fdf.endian);
 	fdf.bpp /= 8;
-	print_points(&fdf);
+	fdf.img2 = mlx_new_image(fdf.mlx, SCREEN_W, SCREEN_H);
+	fdf.addr2 = mlx_get_data_addr(fdf.img2, &fdf.bpp, &fdf.line_size, &fdf.endian);
+	fdf.bpp /= 8;
+	
+	draw_points(&fdf);
+	mlx_hook(fdf.win, 2, (1L << 0), key_press, &fdf);
+	mlx_hook(fdf.win, 3, (1L << 1), key_release, &fdf);
+	mlx_loop_hook(fdf.mlx, render_loop, &fdf);
 	mlx_loop(fdf.mlx);
 	free(fdf.points);
 }

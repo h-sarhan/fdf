@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/28 17:42:21 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/28 20:22:22 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ LINE_DRAWING_SRC := $(addprefix line_drawing/, $(LINE_DRAWING_SRC))
 PARSING_SRC = parse_map.c parse_utils.c
 PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 
-SRC := $(MATH_SRC) $(PARSING_SRC) $(LINE_DRAWING_SRC) main.c
+SRC := $(MATH_SRC) $(PARSING_SRC) $(LINE_DRAWING_SRC) main.c key_input.c
 SRC := $(addprefix src/, $(SRC))
 
 OBJ_DIR = .obj

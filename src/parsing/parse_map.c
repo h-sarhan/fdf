@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 22:38:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 16:56:41 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 19:52:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ void	next_point(char *buffer, int *idx, t_fdf *fdf)
 	{
 		if (buffer[*idx] == '\n')
 		{
-			fdf->max_y++;
 			if (fdf->max_x == 0)
 				fdf->max_x = fdf->point_count;
 			if (fdf->points[fdf->point_count - 1].height > fdf->max_z)
