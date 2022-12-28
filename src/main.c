@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 16:11:04 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 16:58:45 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ void	print_points(t_fdf *fdf)
 		vec.x = i % fdf->max_x;
 		vec.y = i / fdf->max_x;
 		vec.z = fdf->points[i].height;
+		if (vec.z == 12)
+		{
+			printf("uj\n");
+		}
 		vec.w = 1;
 		mat_vec_multiply(&transformed, &fdf->transform_mat, &vec);
 		printf("x = %.1f, ", transformed.x);

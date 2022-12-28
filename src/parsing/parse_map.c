@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 22:38:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 15:30:20 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 16:56:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,10 @@ void	next_point(char *buffer, int *idx, t_fdf *fdf)
 			fdf->max_y++;
 			if (fdf->max_x == 0)
 				fdf->max_x = fdf->point_count;
-			if (fdf->points[fdf->point_count].height > fdf->max_z)
-				fdf->max_z = fdf->points[fdf->point_count].height;
-			if (fdf->points[fdf->point_count].height < fdf->min_z)
-				fdf->min_z = fdf->points[fdf->point_count].height;
+			if (fdf->points[fdf->point_count - 1].height > fdf->max_z)
+				fdf->max_z = fdf->points[fdf->point_count - 1].height;
+			if (fdf->points[fdf->point_count - 1].height < fdf->min_z)
+				fdf->min_z = fdf->points[fdf->point_count - 1].height;
 		}
 		if (!is_space(buffer[*idx]))
 			break ;
@@ -123,14 +123,12 @@ void	parse_map(t_fdf *fdf, int fd)
 		if (i == -1)
 			return ;
 		fdf->points[fdf->point_count].height = read_height(buffer, fd, &i);
-		if (i == -1)
-			return ;
 		fdf->points[fdf->point_count].color_idx = 0;
 		if (buffer[i] == ',')
 			fdf->points[fdf->point_count].color_idx = add_color(fdf,
 					buffer, fd, &i);
 		fdf->point_count++;
-		if (fdf->point_count >= fdf->max_size)
+		if (fdf->point_count == fdf->max_size)
 			resize_points(fdf, fdf->max_size * 2);
 		if (fdf->points == NULL)
 			return ;

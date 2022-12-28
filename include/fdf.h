@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 16:15:03 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 16:59:50 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # define PI 3.14159265359
 # define RAD_TO_DEG 57.2957795131
 # define DEG_TO_RAD 0.01745329251
-# define MAX_POINT_COUNT 300000
+# define MAX_POINT_COUNT 3000
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 100000
