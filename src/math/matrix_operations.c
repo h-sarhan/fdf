@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:42:19 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 12:28:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 12:49:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,27 +77,3 @@ void	identity_matrix(t_mat4 *mat)
 	(*mat)[3][3] = 1;
 }
 
-/**
- * @brief Transposes a given matrix in place
- * @param mat Matrix to be transposed
- */
-void	transpose_matrix(t_mat4 *mat)
-{
-	float			temp;
-	unsigned char	row;
-	unsigned char	col;
-
-	row = 1;
-	while (row < 4)
-	{
-		col = 0;
-		while (col < row)
-		{
-			temp = (*mat)[row][col];
-			(*mat)[row][col] = (*mat)[col][row];
-			(*mat)[col][row] = temp;
-			col++;
-		}
-	row++;
-	}
-}
