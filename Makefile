@@ -6,14 +6,14 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/28 11:26:48 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/28 12:35:58 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 MATH_SRC = matrix_operations.c matrix_transformations.c vector_arithmetic.c vector_operations.c
 MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
-PARSING_SRC = parse_map.c parse_color.c parse_height.c
+PARSING_SRC = parse_map.c parse_utils.c
 PARSING_SRC := $(addprefix parsing/, $(PARSING_SRC))
 
 SRC := $(MATH_SRC) $(PARSING_SRC) main.c
@@ -41,8 +41,7 @@ endif
 
 
 CFLAGS = -Wall -Wextra -march=native -g3 -pthread $(INC) \
-			-fsanitize=address\
-			# $(OPTIMIZATION_FLAGS) \
+			$(OPTIMIZATION_FLAGS) \
 
 all:
 	# @make -j20 $(NAME)

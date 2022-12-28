@@ -6,72 +6,16 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 22:38:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 12:05:16 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 12:45:10 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-// 2344234241 1 1 1 1
-// 1,0x810202 1,0x810202 1,0x810202 1,0x810202 1,0x810202
-// 1,0x810202 1,0x810202 1,0x810202 1,0x810202 1,0x810202
-// 1,0x810202 1,0x810202 1,0x810202 1,0x810202 1,0x810202
-// 1,0x810202 1,0x810202 1,0x810202 1,0x810202 1,0x810202
-// 1,0x810202 1,0x810202 1,0x810202 1,0x810202 1,0x810202
-// 1,0x810202 1,0x810202 1,0x810202 1,0x810202 1,0x810202
-// 1,0x810202 1,0x810202 1,0x810202 1,0x810202 1,0x810202
-// 1,0x810202 1,0x810202 1,0x810202 1,0x810202 1,0x810202
-// 1,0x810202 1,0x810202 1,0x810202 1,0x810202 1,0x810202
-// 1,0x810202 1,0x810202 1,0x810202 1,0x810202 1,0x810202
-// 1,0x810202 1,0x810202 1,0x810202 1,0x810202 1,0x810202
-
-
-void	resize_points(t_fdf *fdf)
+short	read_height(char *buffer, int fd, int *idx)
 {
-	t_point	*new_points;
-
-	new_points = malloc(fdf->point_count * 2 * sizeof(t_point));
-	ft_memcpy(new_points, fdf->points, sizeof(t_point) * fdf->point_count);
-	free(fdf->points);
-	fdf->points = new_points;
-}
-
-char	*ft_strjoin_free(char *s1, char *s2, int fre)
-{
-	char	*str;
-
-	if (s1 == NULL || s2 == NULL)
-		return (NULL);
-	str = ft_strjoin(s1, s2);
-	if (fre == 1 || fre == 3)
-		free(s1);
-	if (fre == 2 || fre == 3)
-		free(s2);
-	return (str);
-}
-
-void	skip_whitespace(char *buffer, int fd, int *idx)
-{
-	while (*idx != -1)
-	{
-		while (buffer[*idx] != '\0')
-		{
-			// if (is_space(buffer[*idx]) == false && buffer[*idx] != '\n')
-			if (is_space(buffer[*idx]) == false)
-				return ;
-			*idx += 1;
-		}
-		*idx = 0;
-		buffer[read(fd, buffer, BUFFER_SIZE)]  = '\0';
-		if (buffer[0] == '\0')
-			*idx = -1;
-	}
-}
-
-int	read_height(char *buffer, int fd, int *idx)
-{
-	int	sign;
-	int	num;
+	char	sign;
+	short	num;
 
 	sign = 1;
 	num = 0;
@@ -90,17 +34,37 @@ int	read_height(char *buffer, int fd, int *idx)
 			*idx += 1;
 		}
 		*idx = 0;
-		buffer[read(fd, buffer, BUFFER_SIZE)]  = '\0';
+		buffer[read(fd, buffer, BUFFER_SIZE)] = '\0';
 		if (buffer[0] == '\0')
 			*idx = -1;
 	}
 	return (sign * num);
 }
 
+void	skip_to_color(char *buffer, int *i, int fd)
+{
+	while (buffer[*i] != 'x' && buffer[*i] != 'X')
+	{
+		*i += 1;
+		if (buffer[*i] == '\0')
+		{
+			*i = 0;
+			buffer[read(fd, buffer, BUFFER_SIZE)] = '\0';
+		}
+	}
+	*i += 1;
+	if (buffer[*i] == '\0')
+	{
+		*i = 0;
+		buffer[read(fd, buffer, BUFFER_SIZE)] = '\0';
+	}
+}
+
 int	read_color(char *buffer, int fd, int *idx)
 {
 	int	color;
 
+	skip_to_color(buffer, idx, fd);
 	color = 0;
 	while (*idx != -1)
 	{
@@ -117,69 +81,52 @@ int	read_color(char *buffer, int fd, int *idx)
 			*idx += 1;
 		}
 		*idx = 0;
-		buffer[read(fd, buffer, BUFFER_SIZE)]  = '\0';
+		buffer[read(fd, buffer, BUFFER_SIZE)] = '\0';
 		if (buffer[0] == '\0')
 			*idx = -1;
 	}
 	return (color);
 }
 
+void	next_point(char *buffer, int *idx, t_fdf *fdf)
+{
+	while (*idx < BUFFER_SIZE)
+	{
+		if (buffer[*idx] == '\n')
+		{
+			fdf->height++;
+			if (fdf->width == 0)
+				fdf->width = fdf->point_count;
+		}
+		if (is_space(buffer[*idx]))
+			break ;
+		*idx += 1;
+	}
+}
+
 void	parse_map(t_fdf *fdf, int fd)
 {
 	char	buffer[BUFFER_SIZE + 1];
 	int		i;
-	int		color;
-	
 
-	fdf->points = malloc(MAX_POINT_COUNT * sizeof(t_point));
-	if (fdf->points == NULL)
-		exit(!printf("FAILED TO MALLOC\n"));
 	buffer[0] = '\0';
 	i = 0;
 	while (1)
 	{
 		skip_whitespace(buffer, fd, &i);
 		if (i == -1)
-		{
-			printf("End of file has been reached\n");
 			return ;
-		}
-		int height = read_height(buffer, fd, &i);
+		fdf->points[fdf->point_count].height = read_height(buffer, fd, &i);
 		if (i == -1)
-		{
-			printf("End of file has been reached\n");
 			return ;
-		}
-		// if (buffer[i] != ',')
-		// 	printf("%d ", height);
+		fdf->points[fdf->point_count].color = fdf->theme;
 		if (buffer[i] == ',')
-		{
-			// printf("stck here\n");
-			while (buffer[i] != 'x' && buffer[i] != 'X')
-			{
-				i++;
-				if (buffer[i] == '\0')
-				{
-					i = 0;
-					buffer[read(fd, buffer, BUFFER_SIZE)]  = '\0';
-				}
-			}
-			i++;
-			if (buffer[i] == '\0')
-			{
-				i = 0;
-				buffer[read(fd, buffer, BUFFER_SIZE)]  = '\0';
-			}
-			color = read_color(buffer, fd, &i);
-			// printf("%d,0X%X ", height, color);
-		}
-		while (i < BUFFER_SIZE)
-		{
-			if (buffer[i] == '\n')
-				printf("\n");
-			if (is_space(buffer[i]))
-				break;
-			i++;
-		}
+			fdf->points[fdf->point_count].color = read_color(buffer, fd, &i);
+		fdf->point_count++;
+		if (fdf->point_count >= fdf->max_size)
+			resize_points(fdf);
+		if (fdf->points == NULL)
+			return ;
+		next_point(buffer, &i, fdf);
 	}
 }

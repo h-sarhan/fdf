@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 11:05:58 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 12:37:01 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@
 # define PI 3.14159265359
 # define RAD_TO_DEG 57.2957795131
 # define DEG_TO_RAD 0.01745329251
-# define MAX_POINT_COUNT 50
+# define MAX_POINT_COUNT 10000
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10000
+# endif
 typedef enum e_parse_phase	t_parse_phase;
 enum	e_parse_phase
 {
@@ -43,7 +46,7 @@ typedef struct s_point	t_point;
 struct s_point
 {
 	int		color;
-	int		height;
+	short	height;
 };
 
 typedef float	t_mat4[4][4];
@@ -70,9 +73,6 @@ void	scaling_matrix(t_mat4 *mat, float x, float y, float z);
 void	rotation_matrix_x(t_mat4 *mat, float r);
 void	rotation_matrix_y(t_mat4 *mat, float r);
 void	rotation_matrix_z(t_mat4 *mat, float r);
-float	rad_to_deg(float r);
-float	deg_to_rad(float r);
-void	axis_angle(t_mat4 *rot_mat, const t_vector *ax, float angle);
 void	add_vec(t_vector *res, const t_vector *v1, const t_vector *v2);
 void	sub_vec(t_vector *res, const t_vector *v1, const t_vector *v2);
 void	scale_vec(t_vector *res, const t_vector *v, float scale);
@@ -82,9 +82,7 @@ void	normalize_vec(t_vector *vec);
 float	dot_product(const t_vector *v1, const t_vector *v2);
 
 void	parse_map(t_fdf *fdf, int fd);
-int	check_space(t_fdf *fdf, char c);
-int	check_space(t_fdf *fdf, char c);
-int	get_height(t_fdf *fdf, const char *buff, int *idx, int fd);
-int	get_color(t_fdf *fdf, const char *buff, int *idx, int fd);
+void	resize_points(t_fdf *fdf);
+void	skip_whitespace(char *buffer, int fd, int *idx);
 
 #endif

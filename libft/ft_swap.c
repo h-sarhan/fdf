@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 16:13:40 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/23 12:15:48 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/28 12:40:21 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_swap(int *a, int *b)
 {
-	int tmp;
+	int	tmp;
 
 	tmp = *a;
 	*a = *b;
@@ -23,7 +23,7 @@ void	ft_swap(int *a, int *b)
 
 void	ft_swapd(float *a, float *b)
 {
-	float tmp;
+	float	tmp;
 
 	tmp = *a;
 	*a = *b;
