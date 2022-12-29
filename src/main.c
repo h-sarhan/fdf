@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/29 13:52:24 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/29 18:13:33 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ void	draw_points(t_fdf *fdf)
 	t_vector	res;
 
 	int	idx;
-	short		*xys;
+	int		*xys;
 	idx = 0;
-	xys = malloc(sizeof(short) * 2 * fdf->point_count);
+	xys = malloc(sizeof(int) * 2 * fdf->point_count);
+	if (xys == NULL)
+		exit(17);
 	for (int i = 0; i < fdf->max_y; i++)
 	{
 		for (int j = 0; j < fdf->max_x; j++)	

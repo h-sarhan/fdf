@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 15:08:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/29 13:58:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/29 18:18:59 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ float	clamp_pixel(float p, char hv)
 	if (p < 0)
 		return 0;
 	if (hv == 'h' && p >= SCREEN_W)
-		p = SCREEN_W - 1;
+		return SCREEN_W - 1;
 	if (hv == 'v' && p >= SCREEN_H)
-		p = SCREEN_H - 1;
+		return SCREEN_H - 1;
 	return p;
 }
 
@@ -48,6 +48,14 @@ void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2)
 	float	dx;
 	float	c;
 
+	if (x1 < 0 && x2 < 0)
+		return ;
+	if (y1 < 0 && y2 < 0)
+		return ;
+	if (x1 >= SCREEN_W && x2 >= SCREEN_W)
+		return ;
+	if (y1 >= SCREEN_H && y2 >= SCREEN_H)
+		return ;
 	x1 = clamp_pixel(x1, 'h');
 	x2 = clamp_pixel(x2, 'h');
 	y1 = clamp_pixel(y1, 'v');
@@ -66,11 +74,52 @@ void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2)
 	int dr = (-r + get_r(c2)) / (float)c;
 	int dg = (-g + get_g(c2)) / (float)c;
 	int db = (-b + get_b(c2)) / (float)c;
+
+	// check edges
+	// if (y2 < 0)
+	// {
+	// 	if (fabs(x2 - x1) > fabs(y2 - y1))
+	// 	{
+	// 	}
+	// 	else
+	// 	{
+	// 	}
+	// }
+	// else if (y2 >= SCREEN_H)
+	// {
+	// 	if (fabs(x2 - x1) > fabs(y2 - y1))
+	// 	{
+	// 	}
+	// 	else
+	// 	{
+	// 	}
+	// }
+	// if (y1 < 0)
+	// {
+	// 	if (fabs(x2 - x1) > fabs(y2 - y1))
+	// 	{
+	// 	}
+	// 	else
+	// 	{
+	// 	}
+	// }
+	// else if (y1 >= SCREEN_H)
+	// {
+	// 	if (fabs(x2 - x1) > fabs(y2 - y1))
+	// 	{
+	// 	}
+	// 	else
+	// 	{
+	// 	}
+		
+	// }
+	
 	r <<= 16;
 	g <<= 8;
 	dr <<= 16;
 	dg <<= 8;
-	while (c > 0)
+	int i = 0;
+	while (i < c)
 	{
 		*(unsigned int*)(fdf->addr + (int)((int)y1 * fdf->line_size + (int)x1 * fdf->bpp)) = r | g | b;
 		y1 += dy;
@@ -78,7 +127,7 @@ void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2)
 		r += dr;
 		g += dg;
 		b += db;
-		c--;
+		i++;
 	}
 }
 
