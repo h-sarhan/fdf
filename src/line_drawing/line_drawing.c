@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 15:08:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/29 20:54:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/30 03:44:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,6 @@ void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2)
 	g <<= 8;
 	dr <<= 16;
 	dg <<= 8;
-	int i = 0;
 	while (c > 0)
 	{
 		*(unsigned int*)(fdf->addr + (int)((int)y1 * fdf->line_size + (int)x1 * fdf->bpp)) = r | g | b;

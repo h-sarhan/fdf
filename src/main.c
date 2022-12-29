@@ -6,12 +6,16 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/29 20:47:43 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/30 03:44:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
+// TODO: NDC Coordinates
+// TODO: perspective projection
+// TODO: THICK lines
+// TODO: Hidden line removal
 
 void	draw_points(t_fdf *fdf)
 {
@@ -99,7 +103,7 @@ int	main(int argc, char **argv)
 	fdf.scale = 2;
 	resize_points(&fdf, fdf.point_count);
 	identity_matrix(&fdf.orientation);
-	translate_matrix(&fdf.translation, SCREEN_W / 2 , SCREEN_H / 2, 0);
+	translate_matrix(&fdf.translation, SCREEN_W / 2.0 , SCREEN_H / 2.0, 0);
 	
 	t_mat4	projection;	
 	identity_matrix(&projection);
