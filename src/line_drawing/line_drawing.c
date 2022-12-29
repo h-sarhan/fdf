@@ -6,12 +6,11 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 15:08:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/29 18:18:59 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/29 20:54:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
 
 // Get the red part of a color
 int	get_r(int trgb)
@@ -34,7 +33,10 @@ int	get_b(int trgb)
 float	clamp_pixel(float p, char hv)
 {
 	if (p < 0)
+	{
+		printf("THIS ONE\n");
 		return 0;
+	}
 	if (hv == 'h' && p >= SCREEN_W)
 		return SCREEN_W - 1;
 	if (hv == 'v' && p >= SCREEN_H)
@@ -48,18 +50,90 @@ void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2)
 	float	dx;
 	float	c;
 
-	if (x1 < 0 && x2 < 0)
-		return ;
-	if (y1 < 0 && y2 < 0)
-		return ;
-	if (x1 >= SCREEN_W && x2 >= SCREEN_W)
-		return ;
-	if (y1 >= SCREEN_H && y2 >= SCREEN_H)
-		return ;
-	x1 = clamp_pixel(x1, 'h');
-	x2 = clamp_pixel(x2, 'h');
-	y1 = clamp_pixel(y1, 'v');
-	y2 = clamp_pixel(y2, 'v');
+	if (x1 < 0 || x2 < 0)
+	{
+		if ((x1 < 0 && x2 < 0) || fabs(x2 - x1) < 0.001)
+			return ;
+		float	m = (y2 - y1) / (x2 - x1);
+		float	b = y2 - m * x2;
+		if (x2 < 0)
+		{
+			x2 = 0;
+			y2 = b;
+			if (y2 < 0)
+				return ;
+		}
+		else
+		{
+			x1 = 0;
+			y1 = b;
+			if (y1 < 0 || y1 > SCREEN_H - 1)
+				return ;
+		}
+	}
+	if (x1 >= SCREEN_W || x2 >= SCREEN_W )
+	{
+		if ((x1 >= SCREEN_W && x2 >= SCREEN_W)|| fabs(x2 - x1) < 0.001)
+			return ;
+		float	m = (y2 - y1) / (x2 - x1);
+		float	b = y2 - m * x2;
+		if (x2 >= SCREEN_W)
+		{
+			x2 = SCREEN_W - 1;
+			y2 = m * x2 + b;
+			if (y2 < 0 || y2 > SCREEN_H - 1)
+				return ;
+		}
+		else
+		{
+			x1 = SCREEN_W - 1;
+			y1 = m * x1 + b;
+			if (y1 < 0 || y1 > SCREEN_H - 1)
+				return ;
+		}
+	}
+	if (y1 < 0 || y2 < 0)
+	{
+		if ((y1 < 0 && y2 < 0)|| fabs(x2 - x1) < 0.001)
+			return ;
+		float	m = (y2 - y1) / (x2 - x1);
+		float	b = y2 - m * x2;
+		if (y2 < 0)
+		{
+			y2 = 0;
+			x2 = - b / m;
+			if (x2 < 0 || x2 > SCREEN_W - 1)
+				return ;
+		}
+		else
+		{
+			y1 = 0;
+			x1 = - b / m;
+			if (x1 < 0 || x1 > SCREEN_W - 1)
+				return ;
+		}
+	}
+	if (y1 >= SCREEN_H || y2 >= SCREEN_H)
+	{
+		if ((y1 >= SCREEN_H && y2 >= SCREEN_H)|| fabs(x2 - x1) < 0.001)
+			return ;
+		float	m = (y2 - y1) / (x2 - x1);
+		float	b = y2 - m * x2;
+		if (y2 >= SCREEN_H)
+		{
+			y2 = SCREEN_H - 1;
+			x2 = (y2 - b) / m;
+			if (x2 < 0 || x2 > SCREEN_W - 1)
+				return;
+		}
+		else
+		{
+			y1 = SCREEN_H - 1;
+			x1 = (y1 - b) / m;
+			if (x1 < 0 || x1 > SCREEN_W - 1)
+				return;
+		}
+	}
 	dx = (x2 - x1);
 	dy = (y2 - y1);
 	if (fabs(dx) > fabs(dy))
@@ -75,51 +149,12 @@ void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2)
 	int dg = (-g + get_g(c2)) / (float)c;
 	int db = (-b + get_b(c2)) / (float)c;
 
-	// check edges
-	// if (y2 < 0)
-	// {
-	// 	if (fabs(x2 - x1) > fabs(y2 - y1))
-	// 	{
-	// 	}
-	// 	else
-	// 	{
-	// 	}
-	// }
-	// else if (y2 >= SCREEN_H)
-	// {
-	// 	if (fabs(x2 - x1) > fabs(y2 - y1))
-	// 	{
-	// 	}
-	// 	else
-	// 	{
-	// 	}
-	// }
-	// if (y1 < 0)
-	// {
-	// 	if (fabs(x2 - x1) > fabs(y2 - y1))
-	// 	{
-	// 	}
-	// 	else
-	// 	{
-	// 	}
-	// }
-	// else if (y1 >= SCREEN_H)
-	// {
-	// 	if (fabs(x2 - x1) > fabs(y2 - y1))
-	// 	{
-	// 	}
-	// 	else
-	// 	{
-	// 	}
-		
-	// }
-	
 	r <<= 16;
 	g <<= 8;
 	dr <<= 16;
 	dg <<= 8;
 	int i = 0;
-	while (i < c)
+	while (c > 0)
 	{
 		*(unsigned int*)(fdf->addr + (int)((int)y1 * fdf->line_size + (int)x1 * fdf->bpp)) = r | g | b;
 		y1 += dy;
@@ -127,7 +162,7 @@ void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2)
 		r += dr;
 		g += dg;
 		b += db;
-		i++;
+		c--;
 	}
 }
 
