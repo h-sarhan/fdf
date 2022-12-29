@@ -6,21 +6,22 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/29 01:56:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/29 13:52:24 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void look_at(t_mat4 *view_mat);
-void	mat_vec_multiply2(t_vector *res, const t_mat4 *mat,
-			const t_vector *vec);
 
 void	draw_points(t_fdf *fdf)
 {
 	t_vector	point;
 	t_vector	res;
 
+	int	idx;
+	short		*xys;
+	idx = 0;
+	xys = malloc(sizeof(short) * 2 * fdf->point_count);
 	for (int i = 0; i < fdf->max_y; i++)
 	{
 		for (int j = 0; j < fdf->max_x; j++)	
@@ -29,8 +30,11 @@ void	draw_points(t_fdf *fdf)
 			point.y = i;
 			point.z = fdf->points[i * fdf->max_x + j].height;
 			mat_vec_multiply(&res, &fdf->transform_mat, &point);
-			fdf->points[i * fdf->max_x + j].x = res.x;
-			fdf->points[i * fdf->max_x + j].y = res.y;
+			// fdf->points[i * fdf->max_x + j].x = res.x;
+			// fdf->points[i * fdf->max_x + j].y = res.y;
+			xys[idx] = res.x;
+			xys[idx + 1] = res.y;
+			idx += 2;
 		}
 	}
 	for (int i = 0; i < fdf->max_y; i++)
@@ -41,20 +45,23 @@ void	draw_points(t_fdf *fdf)
 			if (j + 1 < fdf->max_x)
 			{
 				int c2 = fdf->colors[fdf->points[i * fdf->max_x + j + 1].color_idx];
-				dda(fdf, fdf->points[i * fdf->max_x + j].x, fdf->points[i * fdf->max_x + j + 1].x, 
-					fdf->points[i * fdf->max_x + j].y, fdf->points[i * fdf->max_x + j + 1].y, c1, c2);
+				dda(fdf, xys[i * fdf->max_x * 2 + j * 2], xys[i * fdf->max_x * 2 + (j + 1) * 2],
+					xys[i * fdf->max_x * 2 + j * 2 + 1], xys[i * fdf->max_x * 2 + (j + 1) * 2 + 1], c1, c2);
+				// dda(fdf, fdf->points[i * fdf->max_x + j].x, fdf->points[i * fdf->max_x + j + 1].x, 
+				// 	fdf->points[i * fdf->max_x + j].y, fdf->points[i * fdf->max_x + j + 1].y, c1, c2);
 			}
 			if (i + 1 < fdf->max_y)
 			{
 				int c2 = fdf->colors[fdf->points[(i + 1) * fdf->max_x + j].color_idx];
-				dda(fdf, fdf->points[i * fdf->max_x + j].x, fdf->points[(i + 1) * fdf->max_x + j].x, 
-					fdf->points[i * fdf->max_x + j].y, fdf->points[(i + 1) * fdf->max_x + j].y, c1, c2);
+				dda(fdf, xys[i * fdf->max_x * 2 + j * 2], xys[(i + 1) * fdf->max_x * 2 + (j) * 2],
+					xys[i * fdf->max_x * 2 + j * 2 + 1], xys[(i + 1) * fdf->max_x * 2 + (j) * 2 + 1], c1, c2);
+				// dda(fdf, fdf->points[i * fdf->max_x + j].x, fdf->points[(i + 1) * fdf->max_x + j].x, 
+				// 	fdf->points[i * fdf->max_x + j].y, fdf->points[(i + 1) * fdf->max_x + j].y, c1, c2);
 			}
 		}
 	}
+	free(xys);
 	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
-	// ft_memcpy(fdf->addr2, fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
-	// mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img2, 0, 0);
 }
 
 int	main(int argc, char **argv)

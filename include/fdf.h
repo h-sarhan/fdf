@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/29 01:56:15 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/29 13:55:39 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,12 +140,10 @@ typedef struct s_point	t_point;
 struct s_point
 {
 	int16_t	height;
-	int16_t	x;
-	int16_t	y;
 	uint8_t	color_idx;
 };
 
-#define ROT_SPEED 5
+#define ROT_SPEED 7
 #define MOVE_SPEED 7
 #define ZOOM_SPEED 0.1
 typedef float			t_mat4[4][4];
@@ -153,30 +151,30 @@ typedef float			t_mat4[4][4];
 typedef struct s_fdf	t_fdf;
 struct s_fdf
 {
-	t_point	*points;
 	int		colors[256];
-	int32_t	point_count;
-	int32_t	max_size;
-	int32_t	max_x;
-	int32_t	max_y;
-	int32_t	max_z;
-	int32_t	min_z;
-	uint8_t	num_colors;
 	t_mat4	transform_mat;
 	t_mat4	cam_transform;
 	t_mat4	orientation;
 	t_mat4	translation;
-	float	scale;
+	t_keys	keys;
+	t_point	*points;
 	void	*mlx;
 	void	*win;
 	void	*img;
 	char	*addr;
 	void	*img2;
 	char	*addr2;
+	int32_t	point_count;
+	int32_t	max_size;
+	int32_t	max_x;
+	int32_t	max_y;
+	int32_t	max_z;
+	int32_t	min_z;
 	int		bpp;
 	int		line_size;
 	int		endian;
-	t_keys	keys;
+	float	scale;
+	uint8_t	num_colors;
 };
 
 void	mat_multiply(t_mat4 *res, const t_mat4 *m1, const t_mat4 *m2);
@@ -203,13 +201,12 @@ void	parse_map(t_fdf *fdf, int fd);
 void	resize_points(t_fdf *fdf, size_t new_size);
 void	skip_whitespace(char *buffer, int fd, int *idx);
 
-void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2);
 
 void	calculate_transforms(t_fdf *fdf);
 int		key_press(int key, t_fdf *fdf);
 int		key_release(int key, t_fdf *fdf);
 int 	render_loop(t_fdf *fdf);
 void	draw_points(t_fdf *fdf);
-void bresenham(t_fdf *fdf, int x0, int x1, int y0, int y1, int color);
+void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2);
 
 #endif

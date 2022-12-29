@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 19:30:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/29 00:53:30 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/29 13:27:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ int render_loop(t_fdf *fdf)
 	if (fdf->keys.plus == true)
 		fdf->scale += ZOOM_SPEED;
 	if (fdf->keys.minus == true)
-		fdf->scale -= ZOOM_SPEED;
+	{
+		if (fdf->scale > 0.1)
+			fdf->scale -= ZOOM_SPEED;
+	}
 	if (fdf->keys.w == true)
 	{
 		translate_matrix(&mat, 0, -MOVE_SPEED, 0);
