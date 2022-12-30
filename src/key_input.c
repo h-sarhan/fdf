@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 19:30:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/29 20:39:35 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/30 12:48:47 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,25 @@ void	toggle_keys_held(int key, t_fdf *fdf, bool on_off)
 		fdf->keys.z = on_off;
 }
 
+int	close_window(t_fdf *fdf)
+{
+	printf("QUITTING PROGRAM!\n");
+	mlx_destroy_image(fdf->mlx, fdf->img);
+	// mlx_destroy_window(fdf->mlx, fdf->win);
+	// mlx_destroy_display(fdf->mlx);
+	free(fdf->mlx);
+	exit(EXIT_SUCCESS);
+	return (0);
+}
+
+
 int	key_press(int key, t_fdf *fdf)
 {
 	toggle_keys_held(key, fdf, true);
+	if (key == KEY_ESC)
+	{
+		close_window(fdf);
+	}
 	return (0);
 }
 

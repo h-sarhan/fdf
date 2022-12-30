@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/29 01:02:50 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/30 12:31:43 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,11 +121,8 @@ void	cross_product(t_vector *res, const t_vector *v1, const t_vector *v2)
 void	calculate_transforms(t_fdf *fdf)
 {
 	t_mat4	scale_mat;
-	t_mat4	translate_origin;
 
 	identity_matrix(&fdf->transform_mat);
-	translate_matrix(&translate_origin, -fdf->max_x / 2.0, -fdf->max_y / 2.0, 0);
-	mat_multiply(&fdf->transform_mat, &translate_origin, &fdf->transform_mat);
 	scaling_matrix(&scale_mat, fdf->scale, fdf->scale, fdf->scale);
 	mat_multiply(&fdf->transform_mat, &scale_mat, &fdf->transform_mat);
 	mat_multiply(&fdf->transform_mat, &fdf->orientation, &fdf->transform_mat);

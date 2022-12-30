@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/29 13:55:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/30 12:32:38 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 #  define BUFFER_SIZE 100000
 # endif
 
-#define SCREEN_W 1280
-#define SCREEN_H 720
+#define SCREEN_W 700
+#define SCREEN_H 700
 
 # ifdef __linux__
 #  define KEY_ESC 65307
@@ -143,9 +143,9 @@ struct s_point
 	uint8_t	color_idx;
 };
 
-#define ROT_SPEED 7
-#define MOVE_SPEED 7
-#define ZOOM_SPEED 0.1
+#define ROT_SPEED 4
+#define MOVE_SPEED 0.01
+#define ZOOM_SPEED 0.01
 typedef float			t_mat4[4][4];
 
 typedef struct s_fdf	t_fdf;

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/30 03:44:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/30 12:56:44 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	draw_points(t_fdf *fdf)
 	int	idx;
 	short		*xys;
 	idx = 0;
+	// printf("z_min == %d\n", fdf->min_z);
+	// printf("z_max == %d\n", fdf->max_z);
 	xys = malloc(sizeof(short) * 2 * fdf->point_count);
 	if (xys == NULL)
 		exit(17);
@@ -32,14 +34,16 @@ void	draw_points(t_fdf *fdf)
 	{
 		for (int j = 0; j < fdf->max_x; j++)	
 		{
-			point.x = j;
-			point.y = i;
-			point.z = fdf->points[i * fdf->max_x + j].height;
+			point.x = (2.0f * j / fdf->max_x - 1.0f);
+			point.y = (2.0f * i / fdf->max_y - 1.0f);
+			int16_t height = fdf->points[i * fdf->max_x + j].height;
+			
+			point.z = (height- fdf->min_z) / (float)(fdf->max_z - fdf->min_z);
+			
 			mat_vec_multiply(&res, &fdf->transform_mat, &point);
-			// fdf->points[i * fdf->max_x + j].x = res.x;
-			// fdf->points[i * fdf->max_x + j].y = res.y;
-			xys[idx] = res.x;
-			xys[idx + 1] = res.y;
+
+			xys[idx] = (res.x) * SCREEN_W / 2.0f;
+			xys[idx + 1] = (res.y) * SCREEN_H / 2.0f;
 			idx += 2;
 		}
 	}
@@ -100,10 +104,11 @@ int	main(int argc, char **argv)
 		exit(!printf("FAILED TO MALLOC\n"));
 	close(fd);
 	// fdf.scale = fdf.max;
-	fdf.scale = 2;
+	fdf.scale = 0.7;
 	resize_points(&fdf, fdf.point_count);
 	identity_matrix(&fdf.orientation);
-	translate_matrix(&fdf.translation, SCREEN_W / 2.0 , SCREEN_H / 2.0, 0);
+	translate_matrix(&fdf.translation, 1, 1, 0);
+	// translate_matrix(&fdf.translation, 0, 0, 0);
 	
 	t_mat4	projection;	
 	identity_matrix(&projection);
