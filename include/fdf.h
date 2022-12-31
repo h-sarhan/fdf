@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/30 12:32:38 by hsarhan          ###   ########.fr       */
+/*   Updated: 2022/12/31 16:45:22 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 #  define BUFFER_SIZE 100000
 # endif
 
-#define SCREEN_W 700
-#define SCREEN_H 700
+#define SCREEN_W 1200
+#define SCREEN_H 1200
 
 # ifdef __linux__
 #  define KEY_ESC 65307
