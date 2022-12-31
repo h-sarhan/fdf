@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/29 21:51:32 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/28 20:43:34 by hsarhan          ###   ########.fr        #
+#    Updated: 2022/12/31 16:49:59 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ CC = gcc
 
 OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -fno-trapping-math -funroll-loops
 
-CFLAGS =  -Wall -Wextra -g3 -DBUFFER_SIZE=10000 \
+CFLAGS =  -Wall -Wextra -g3 -DBUFFER_SIZE=100000 \
 		$(OPTIMIZATION_FLAGS) \
 		# -fsanitize=address \
 
