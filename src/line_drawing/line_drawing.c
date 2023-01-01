@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 15:08:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/30 12:57:40 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/01 12:45:43 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2)
 {
 	float	dy;
 	float	dx;
-	float	c;
+	float	steps;
 
 	if (x1 < 0 || x2 < 0)
 	{
@@ -137,23 +137,25 @@ void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2)
 	dx = (x2 - x1);
 	dy = (y2 - y1);
 	if (fabs(dx) > fabs(dy))
-		c = fabs(dx);
+		steps = fabs(dx);
 	else
-		c = fabs(dy);
-	dx /= c;
-	dy /= c;
+		steps = fabs(dy);
+	if (fabs(steps) < 0.001 )
+		return ;
+	dx /= steps;
+	dy /= steps;
 	int r = get_r(c1);
 	int g = get_g(c1);
 	int b = get_b(c1);
-	int dr = (-r + get_r(c2)) / (float)c;
-	int dg = (-g + get_g(c2)) / (float)c;
-	int db = (-b + get_b(c2)) / (float)c;
+	int dr = (-r + get_r(c2)) / (float)steps;
+	int dg = (-g + get_g(c2)) / (float)steps;
+	int db = (-b + get_b(c2)) / (float)steps;
 
 	r <<= 16;
 	g <<= 8;
 	dr <<= 16;
 	dg <<= 8;
-	while (c > 0)
+	while (steps > 0)
 	{
 		*(unsigned int*)(fdf->addr + (int)((int)y1 * fdf->line_size + (int)x1 * fdf->bpp)) = r | g | b;
 		y1 += dy;
@@ -161,7 +163,7 @@ void	dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2)
 		r += dr;
 		g += dg;
 		b += db;
-		c--;
+		steps--;
 	}
 }
 
