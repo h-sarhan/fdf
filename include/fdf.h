@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/31 16:45:22 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/01 11:51:02 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@
 # define RAD_TO_DEG 57.2957795131
 # define DEG_TO_RAD 0.01745329251
 # define MAX_POINT_COUNT 3000
-# include "mlx.h"
+#ifdef __linux__
+# include "../mlx_linux/mlx.h"
+#else
+# include "../mlx/mlx.h"
+#endif
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 100000
