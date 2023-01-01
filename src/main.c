@@ -6,13 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/30 12:56:44 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/01 11:52:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 // TODO: NDC Coordinates
+// TODO: Fix color gradient
 // TODO: perspective projection
 // TODO: THICK lines
 // TODO: Hidden line removal
