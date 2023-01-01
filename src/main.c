@@ -6,13 +6,14 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/01/01 12:02:13 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/01/01 17:27:18 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-// TODO: NDC Coordinates
+// TODO: Proper view projection and orthographic projection matrices
+// Page 162 Fundamentals of computer graphics
 // TODO: Fix color gradient
 // 1: https://github.com/VBrazhnik/FdF/wiki/How-to-create-linear-gradient%3F
 // 2: https://stackoverflow.com/questions/22607043/color-gradient-algorithm
