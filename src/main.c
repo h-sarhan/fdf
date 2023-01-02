@@ -12,6 +12,7 @@
 
 #include "fdf.h"
 
+// TODO: Implement midpoint algorithm for line drawing
 // TODO: Proper view projection and orthographic projection matrices
 // Page 162 Fundamentals of computer graphics
 // TODO: Fix color gradient
