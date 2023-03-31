@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2022/12/30 12:31:43 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/03/31 10:57:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	translate_matrix(t_mat4 *mat, float x, float y, float z)
 	(*mat)[0][3] = x;
 	(*mat)[1][3] = y;
 	(*mat)[2][3] = z;
+	(*mat)[3][3] = 1;
 }
 
 /**
