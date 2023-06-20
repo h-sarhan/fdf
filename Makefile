@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/06/20 17:37:33 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/06/20 19:49:36 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRC := $(addprefix src/, $(SRC))
 OBJ_DIR = .obj
 OBJ := $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 DEPENDS := $(OBJ:.o=.d)
-LIBFT = libft/libft.a
+LIBFT = lib/libft/libft.a
 
 NAME = fdf
 OS := $(shell uname)
@@ -33,17 +33,17 @@ CC = gcc
 ifeq ($(OS),Linux)
 	INC = -Iinclude -Ilibft  -I/usr/include -Imlx_linux
 	OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
-	LINK_FLAGS = -Lmlx_linux -lmlx -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
-	MLX = mlx_linux
+	LINK_FLAGS = -Llib/mlx_linux -lmlx -Imlx_linux -lXext -lX11 -lm -lz
+	MLX = lib/mlx_linux
 else
-	INC = -Iinclude -Ilibft -Imlx 
+	INC = -Iinclude -Ilibft -Imlx
 	OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
-	LINK_FLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit
-	MLX = mlx
+	LINK_FLAGS = -Llib/mlx -lmlx -framework OpenGL -framework AppKit
+	MLX = lib/mlx
 endif
 
 
-CFLAGS = -Wall -Wextra -march=native -g3 -pthread $(INC) \
+CFLAGS = -Wall -Wextra -Werror -march=native -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
 
 
@@ -55,7 +55,7 @@ $(OBJ_DIR)/%.o: %.c
 	$(CC) -MJ $@.json $(CFLAGS) -MMD -MP -c -o $@ $<
 
 $(LIBFT):
-	make -C  libft
+	make -C  lib/libft
 
 $(NAME): $(LIBFT) $(OBJ) Makefile
 	-make -s  all -C $(MLX)

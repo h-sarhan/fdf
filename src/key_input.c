@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 19:30:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/06/20 17:35:32 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/20 19:50:29 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,59 +87,59 @@ int render_loop(t_fdf *fdf)
     }
     if (fdf->keys.w == true)
     {
-        translate_matrix(&mat, 0, -MOVE_SPEED, 0);
-        mat_multiply(&fdf->translation, &mat, &fdf->translation);
+        translate_matrix(mat, 0, -MOVE_SPEED, 0);
+        mat_multiply(fdf->translation, mat, fdf->translation);
     }
     if (fdf->keys.s == true)
     {
-        translate_matrix(&mat, 0, MOVE_SPEED, 0);
-        mat_multiply(&fdf->translation, &mat, &fdf->translation);
+        translate_matrix(mat, 0, MOVE_SPEED, 0);
+        mat_multiply(fdf->translation, mat, fdf->translation);
     }
     if (fdf->keys.q == true)
     {
-        translate_matrix(&mat, 0, 0, MOVE_SPEED);
-        mat_multiply(&fdf->translation, &mat, &fdf->translation);
+        translate_matrix(mat, 0, 0, MOVE_SPEED);
+        mat_multiply(fdf->translation, mat, fdf->translation);
     }
     if (fdf->keys.e == true)
     {
-        translate_matrix(&mat, 0, 0, -MOVE_SPEED);
-        mat_multiply(&fdf->translation, &mat, &fdf->translation);
+        translate_matrix(mat, 0, 0, -MOVE_SPEED);
+        mat_multiply(fdf->translation, mat, fdf->translation);
     }
     if (fdf->keys.a == true)
     {
-        translate_matrix(&mat, -MOVE_SPEED, 0, 0);
-        mat_multiply(&fdf->translation, &mat, &fdf->translation);
+        translate_matrix(mat, -MOVE_SPEED, 0, 0);
+        mat_multiply(fdf->translation, mat, fdf->translation);
     }
     if (fdf->keys.d == true)
     {
-        translate_matrix(&mat, MOVE_SPEED, 0, 0);
-        mat_multiply(&fdf->translation, &mat, &fdf->translation);
+        translate_matrix(mat, MOVE_SPEED, 0, 0);
+        mat_multiply(fdf->translation, mat, fdf->translation);
     }
     if (fdf->keys.right == true)
     {
-        rotation_matrix_y(&mat, ROT_SPEED * DEG_TO_RAD);
-        mat_multiply(&fdf->orientation, &mat, &fdf->orientation);
+        rotation_matrix_y(mat, ROT_SPEED * DEG_TO_RAD);
+        mat_multiply(fdf->orientation, mat, fdf->orientation);
     }
     if (fdf->keys.left == true)
     {
-        rotation_matrix_y(&mat, -ROT_SPEED * DEG_TO_RAD);
-        mat_multiply(&fdf->orientation, &mat, &fdf->orientation);
+        rotation_matrix_y(mat, -ROT_SPEED * DEG_TO_RAD);
+        mat_multiply(fdf->orientation, mat, fdf->orientation);
     }
     if (fdf->keys.up == true)
     {
-        rotation_matrix_x(&mat, ROT_SPEED * DEG_TO_RAD);
-        mat_multiply(&fdf->orientation, &mat, &fdf->orientation);
+        rotation_matrix_x(mat, ROT_SPEED * DEG_TO_RAD);
+        mat_multiply(fdf->orientation, mat, fdf->orientation);
     }
     if (fdf->keys.down == true)
     {
-        rotation_matrix_x(&mat, -ROT_SPEED * DEG_TO_RAD);
-        mat_multiply(&fdf->orientation, &mat, &fdf->orientation);
+        rotation_matrix_x(mat, -ROT_SPEED * DEG_TO_RAD);
+        mat_multiply(fdf->orientation, mat, fdf->orientation);
     }
     if (fdf->keys.w || fdf->keys.a || fdf->keys.s || fdf->keys.d ||
         fdf->keys.left || fdf->keys.right || fdf->keys.up || fdf->keys.down ||
         fdf->keys.minus || fdf->keys.plus || fdf->keys.q || fdf->keys.e)
     {
-        ft_bzero(fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
+        bzero(fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
         calculate_transforms(fdf);
         draw_points(fdf);
     }

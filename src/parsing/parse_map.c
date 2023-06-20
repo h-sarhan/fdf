@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 22:38:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/06/20 17:38:21 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/20 19:44:56 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,9 @@ void parse_map(t_fdf *fdf, int fd)
         if (i == -1)
             return;
         fdf->points[fdf->point_count].height = read_height(buffer, fd, &i);
-        fdf->points[fdf->point_count].color_idx = 0;
+        fdf->points[fdf->point_count].color = 0xffffff;
         if (buffer[i] == ',')
-            fdf->points[fdf->point_count].color_idx =
-                add_color(fdf, buffer, fd, &i);
+            fdf->points[fdf->point_count].color = read_color(buffer, fd, &i);
         fdf->point_count++;
         if (fdf->point_count == fdf->max_size)
             resize_points(fdf, fdf->max_size * 2);

@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 04:57:47 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/06/20 17:38:23 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/20 19:42:46 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,4 @@ void skip_whitespace(char *buffer, int fd, int *idx)
         if (buffer[0] == '\0')
             *idx = -1;
     }
-}
-
-uint8_t add_color(t_fdf *fdf, char *buffer, int fd, int *idx)
-{
-    int color;
-    uint8_t i;
-
-    color = read_color(buffer, fd, idx);
-    i = 1;
-    while (i < fdf->num_colors + 1)
-    {
-        if (fdf->colors[i] == color)
-            return (i);
-        i++;
-    }
-    fdf->colors[fdf->num_colors + 1] = color;
-    fdf->num_colors++;
-    return (i);
 }

@@ -6,20 +6,25 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/06/20 17:33:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/20 19:57:29 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-// TODO: Implement midpoint algorithm for line drawing
+// TODO: Multi threading
+// TODO: Camera
+// TODO: .OBJ files
+// TODO: Implement line clipping algorithm
+// TODO: THICK lines
+// TODO: Anti-aliased lines
 // TODO: Proper view projection and orthographic projection matrices
 // Page 162 Fundamentals of computer graphics
 // TODO: Fix color gradient
 // 1: https://github.com/VBrazhnik/FdF/wiki/How-to-create-linear-gradient%3F
 // 2: https://stackoverflow.com/questions/22607043/color-gradient-algorithm
-// TODO: perspective projection
-// TODO: THICK lines
+// TODO: Perspective projection
+// TODO: Conical projection
 // TODO: Hidden line removal
 
 void draw_points(t_fdf *fdf)
@@ -39,16 +44,17 @@ void draw_points(t_fdf *fdf)
     {
         for (int j = 0; j < fdf->max_x; j++)
         {
-            point.x = (2.0f * j / fdf->max_x - 1.0f);
-            point.y = (2.0f * i / fdf->max_y - 1.0f);
+            point[0] = (2.0f * j / fdf->max_x - 1.0f);
+            point[1] = (2.0f * i / fdf->max_y - 1.0f);
             int16_t height = fdf->points[i * fdf->max_x + j].height;
 
-            point.z = (height - fdf->min_z) / (float) (fdf->max_z - fdf->min_z);
+            point[2] =
+                (height - fdf->min_z) / (float) (fdf->max_z - fdf->min_z);
 
-            mat_vec_multiply(&res, &fdf->transform_mat, &point);
+            mat_vec_multiply(res, fdf->transform_mat, point);
+            xys[idx] = (res[0]) * SCREEN_W / 2.0f;
+            xys[idx + 1] = (res[1]) * SCREEN_H / 2.0f;
 
-            xys[idx] = (res.x) * SCREEN_W / 2.0f;
-            xys[idx + 1] = (res.y) * SCREEN_H / 2.0f;
             idx += 2;
         }
     }
@@ -56,31 +62,22 @@ void draw_points(t_fdf *fdf)
     {
         for (int j = 0; j < fdf->max_x; j++)
         {
-            int c1 = fdf->colors[fdf->points[i * fdf->max_x + j].color_idx];
+            int c1 = fdf->points[i * fdf->max_x + j].color;
             if (j + 1 < fdf->max_x)
             {
-                int c2 =
-                    fdf->colors[fdf->points[i * fdf->max_x + j + 1].color_idx];
+                int c2 = fdf->points[i * fdf->max_x + j + 1].color;
                 dda(fdf, xys[i * fdf->max_x * 2 + j * 2],
                     xys[i * fdf->max_x * 2 + (j + 1) * 2],
                     xys[i * fdf->max_x * 2 + j * 2 + 1],
                     xys[i * fdf->max_x * 2 + (j + 1) * 2 + 1], c1, c2);
-                // dda(fdf, fdf->points[i * fdf->max_x + j].x, fdf->points[i *
-                // fdf->max_x + j + 1].x, 	fdf->points[i * fdf->max_x + j].y,
-                // fdf->points[i * fdf->max_x + j + 1].y, c1, c2);
             }
             if (i + 1 < fdf->max_y)
             {
-                int c2 = fdf->colors[fdf->points[(i + 1) * fdf->max_x + j]
-                                         .color_idx];
+                int c2 = fdf->points[(i + 1) * fdf->max_x + j].color;
                 dda(fdf, xys[i * fdf->max_x * 2 + j * 2],
                     xys[(i + 1) * fdf->max_x * 2 + (j) *2],
                     xys[i * fdf->max_x * 2 + j * 2 + 1],
                     xys[(i + 1) * fdf->max_x * 2 + (j) *2 + 1], c1, c2);
-                // dda(fdf, fdf->points[i * fdf->max_x + j].x, fdf->points[(i +
-                // 1) * fdf->max_x + j].x, 	fdf->points[i * fdf->max_x + j].y,
-                // fdf->points[(i
-                // + 1) * fdf->max_x + j].y, c1, c2);
             }
         }
     }
@@ -97,7 +94,7 @@ int main(int argc, char **argv)
     fdf.max_size = MAX_POINT_COUNT;
     fdf.max_z = INT16_MIN;
     fdf.min_z = INT16_MAX;
-    fdf.colors[0] = 0xffffff;
+    // fdf.colors[0] = 0xffffff;
     if (argc != 2)
     {
         exit(1);
@@ -120,16 +117,16 @@ int main(int argc, char **argv)
     // fdf.scale = fdf.max;
     fdf.scale = 0.7;
     resize_points(&fdf, fdf.point_count);
-    identity_matrix(&fdf.orientation);
-    translate_matrix(&fdf.translation, 1, 1, 0);
-    // translate_matrix(&fdf.translation, 0, 0, 0);
+    identity_matrix(fdf.orientation);
+    translate_matrix(fdf.translation, 1, 1, 0);
+    // translate_matrix(fdf.translation, 0, 0, 0);
 
     t_mat4 projection;
-    identity_matrix(&projection);
-    rotation_matrix_z(&projection, -45 * DEG_TO_RAD);
-    mat_multiply(&fdf.orientation, &projection, &fdf.orientation);
-    rotation_matrix_x(&projection, 35.264 * DEG_TO_RAD);
-    mat_multiply(&fdf.orientation, &projection, &fdf.orientation);
+    identity_matrix(projection);
+    rotation_matrix_z(projection, -45 * DEG_TO_RAD);
+    mat_multiply(fdf.orientation, projection, fdf.orientation);
+    rotation_matrix_x(projection, 35.264 * DEG_TO_RAD);
+    mat_multiply(fdf.orientation, projection, fdf.orientation);
 
     calculate_transforms(&fdf);
     fdf.mlx = mlx_init();
@@ -140,9 +137,6 @@ int main(int argc, char **argv)
     fdf.addr =
         mlx_get_data_addr(fdf.img, &fdf.bpp, &fdf.line_size, &fdf.endian);
     fdf.bpp /= 8;
-    // fdf.img2 = mlx_new_image(fdf.mlx, SCREEN_W, SCREEN_H);
-    // fdf.addr2 = mlx_get_data_addr(fdf.img2, &fdf.bpp, &fdf.line_size,
-    // &fdf.endian); fdf.bpp /= 8;
 
     draw_points(&fdf);
     mlx_hook(fdf.win, 2, (1L << 0), key_press, &fdf);
