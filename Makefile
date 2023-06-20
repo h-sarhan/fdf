@@ -6,14 +6,14 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/06/20 19:49:36 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/06/20 20:15:15 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 MATH_SRC = matrix_operations.c matrix_transformations.c vector_arithmetic.c vector_operations.c
 MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
-LINE_DRAWING_SRC = line_drawing.c
+LINE_DRAWING_SRC = drawing.c clipping.c
 LINE_DRAWING_SRC := $(addprefix line_drawing/, $(LINE_DRAWING_SRC))
 
 PARSING_SRC = parse_map.c parse_utils.c

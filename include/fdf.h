@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/06/20 19:46:42 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/20 20:21:57 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 #define BUFFER_SIZE 100000
 #endif
 
-#define SCREEN_W 1200
-#define SCREEN_H 1200
+#define SCREEN_W 1300
+#define SCREEN_H 1300
 
 #ifdef __linux__
 #define KEY_ESC         65307
@@ -200,5 +200,6 @@ int key_release(int key, t_fdf *fdf);
 int render_loop(t_fdf *fdf);
 void draw_points(t_fdf *fdf);
 void dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2);
+bool clip_line(float *x0, float *y0, float *x1, float *y1);
 
 #endif

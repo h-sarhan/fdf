@@ -6,11 +6,35 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2023/06/20 19:48:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/20 20:02:09 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+/**
+ * @brief Sets the matrix to the identity matrix
+ * @param mat The matrix to be set to an identity matrix
+ */
+void identity_matrix(t_mat4 mat)
+{
+    mat[0][0] = 1;
+    mat[0][1] = 0;
+    mat[0][2] = 0;
+    mat[0][3] = 0;
+    mat[1][0] = 0;
+    mat[1][1] = 1;
+    mat[1][2] = 0;
+    mat[1][3] = 0;
+    mat[2][0] = 0;
+    mat[2][1] = 0;
+    mat[2][2] = 1;
+    mat[2][3] = 0;
+    mat[3][0] = 0;
+    mat[3][1] = 0;
+    mat[3][2] = 0;
+    mat[3][3] = 1;
+}
 
 /**
  * @brief Initialize the translation matrix.

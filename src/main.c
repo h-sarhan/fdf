@@ -6,16 +6,16 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/06/20 19:57:29 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/20 20:05:06 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
+// TODO: Implement line clipping algorithm
 // TODO: Multi threading
 // TODO: Camera
 // TODO: .OBJ files
-// TODO: Implement line clipping algorithm
 // TODO: THICK lines
 // TODO: Anti-aliased lines
 // TODO: Proper view projection and orthographic projection matrices
