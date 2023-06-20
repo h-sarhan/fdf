@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2022/12/29 20:52:14 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/06/20 17:37:33 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,21 +38,21 @@ ifeq ($(OS),Linux)
 else
 	INC = -Iinclude -Ilibft -Imlx 
 	OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
-	LINK_FLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit 
+	LINK_FLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit
 	MLX = mlx
 endif
 
 
 CFLAGS = -Wall -Wextra -march=native -g3 -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
-			
+
 
 all:
 	@make -j20 $(NAME)
 
-$(OBJ_DIR)/%.o: %.c 
+$(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -MMD -MP -c -o $@ $<
+	$(CC) -MJ $@.json $(CFLAGS) -MMD -MP -c -o $@ $<
 
 $(LIBFT):
 	make -C  libft
@@ -62,6 +62,9 @@ $(NAME): $(LIBFT) $(OBJ) Makefile
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(LINK_FLAGS) -o $(NAME)
 
 -include $(DEPENDS)
+
+db:
+	@sed -e '1s/^/[\'$$'\n''/' -e '$$s/,$$/\'$$'\n'']/' $(OBJ_DIR)/src/**/*.o.json $(OBJ_DIR)/src/*.o.json > compile_commands.json
 
 clean:
 	-make -C $(MLX) clean

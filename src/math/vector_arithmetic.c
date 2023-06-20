@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 09:46:11 by hsarhan           #+#    #+#             */
-/*   Updated: 2022/12/28 23:47:31 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/20 17:38:29 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
  * @param v1 First operand
  * @param v2 Second operand
  */
-void	add_vec(t_vector *res, const t_vector *v1, const t_vector *v2)
+void add_vec(t_vector *res, const t_vector *v1, const t_vector *v2)
 {
-	res->x = v1->x + v2->x;
-	res->y = v1->y + v2->y;
-	res->z = v1->z + v2->z;
+    res->x = v1->x + v2->x;
+    res->y = v1->y + v2->y;
+    res->z = v1->z + v2->z;
 }
 
 /**
@@ -31,11 +31,11 @@ void	add_vec(t_vector *res, const t_vector *v1, const t_vector *v2)
  * @param v1 First operand
  * @param v2 Second operand
  */
-void	sub_vec(t_vector *res, const t_vector *v1, const t_vector *v2)
+void sub_vec(t_vector *res, const t_vector *v1, const t_vector *v2)
 {
-	res->x = v1->x - v2->x;
-	res->y = v1->y - v2->y;
-	res->z = v1->z - v2->z;
+    res->x = v1->x - v2->x;
+    res->y = v1->y - v2->y;
+    res->z = v1->z - v2->z;
 }
 
 /**
@@ -44,11 +44,11 @@ void	sub_vec(t_vector *res, const t_vector *v1, const t_vector *v2)
  * @param v Vector to be scaled
  * @param scale scaling factor
  */
-void	scale_vec(t_vector *res, const t_vector *v, float scale)
+void scale_vec(t_vector *res, const t_vector *v, float scale)
 {
-	res->x = scale * v->x;
-	res->y = scale * v->y;
-	res->z = scale * v->z;
+    res->x = scale * v->x;
+    res->y = scale * v->y;
+    res->z = scale * v->z;
 }
 
 /**
@@ -56,9 +56,9 @@ void	scale_vec(t_vector *res, const t_vector *v, float scale)
  * @param res The result of -v will be stored in this vector
  * @param v Vector to be negated
  */
-void	negate_vec(t_vector *res, const t_vector *v)
+void negate_vec(t_vector *res, const t_vector *v)
 {
-	res->x = -1 * v->x;
-	res->y = -1 * v->y;
-	res->z = -1 * v->z;
+    res->x = -1 * v->x;
+    res->y = -1 * v->y;
+    res->z = -1 * v->z;
 }
