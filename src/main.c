@@ -13,7 +13,6 @@
 #include "fdf.h"
 
 // TODO: Perspective projection
-// TODO: Proper view projection and orthographic projection matrices
 // TODO: Camera
 
 // TODO: .OBJ files
@@ -49,40 +48,35 @@ void draw_points(t_fdf *fdf)
         {
             point[0] = j - fdf->max_x / 2.0f;
             point[1] = i - fdf->max_y / 2.0f;
-
             point[2] = fdf->points[i * fdf->max_x + j].height;
-
-            t_vec4 proj_point;
-            // * Can be optimized to 1 matrix multiplication
             mat_vec_multiply(res, fdf->transform_mat, point);
-            mat_vec_multiply(proj_point, fdf->projection, res);
-            xys[idx] = (proj_point[0]);
-            xys[idx + 1] = (proj_point[1]);
-
+            xys[idx] = res[0];
+            xys[idx + 1] = res[1];
             idx += 2;
         }
     }
     for (int i = 0; i < fdf->max_y; i++)
     {
+        for (int j = 0; j < fdf->max_x - 1; j++)
+        {
+            int c1 = fdf->points[i * fdf->max_x + j].color;
+            int c2 = fdf->points[i * fdf->max_x + j + 1].color;
+            draw_line(fdf, xys[i * fdf->max_x * 2 + j * 2],
+                      xys[i * fdf->max_x * 2 + (j + 1) * 2],
+                      xys[i * fdf->max_x * 2 + j * 2 + 1],
+                      xys[i * fdf->max_x * 2 + (j + 1) * 2 + 1], c1, c2);
+        }
+    }
+    for (int i = 0; i < fdf->max_y - 1; i++)
+    {
         for (int j = 0; j < fdf->max_x; j++)
         {
             int c1 = fdf->points[i * fdf->max_x + j].color;
-            if (j + 1 < fdf->max_x)
-            {
-                int c2 = fdf->points[i * fdf->max_x + j + 1].color;
-                draw_line(fdf, xys[i * fdf->max_x * 2 + j * 2],
-                          xys[i * fdf->max_x * 2 + (j + 1) * 2],
-                          xys[i * fdf->max_x * 2 + j * 2 + 1],
-                          xys[i * fdf->max_x * 2 + (j + 1) * 2 + 1], c1, c2);
-            }
-            if (i + 1 < fdf->max_y)
-            {
-                int c2 = fdf->points[(i + 1) * fdf->max_x + j].color;
-                draw_line(fdf, xys[i * fdf->max_x * 2 + j * 2],
-                          xys[(i + 1) * fdf->max_x * 2 + (j) *2],
-                          xys[i * fdf->max_x * 2 + j * 2 + 1],
-                          xys[(i + 1) * fdf->max_x * 2 + (j) *2 + 1], c1, c2);
-            }
+            int c2 = fdf->points[(i + 1) * fdf->max_x + j].color;
+            draw_line(fdf, xys[i * fdf->max_x * 2 + j * 2],
+                      xys[(i + 1) * fdf->max_x * 2 + (j) *2],
+                      xys[i * fdf->max_x * 2 + j * 2 + 1],
+                      xys[(i + 1) * fdf->max_x * 2 + (j) *2 + 1], c1, c2);
         }
     }
     free(xys);
@@ -92,11 +86,18 @@ void draw_points(t_fdf *fdf)
 void center_to_world(t_fdf *fdf)
 {
     t_vec4 screen_center = {(float) SCREEN_W / 2, (float) SCREEN_H / 2, 0};
-
     t_vec4 world_center;
     mat_vec_multiply(world_center, fdf->inv_projection, screen_center);
-
     translate_matrix(fdf->translation, world_center[0], world_center[1], 0);
+}
+
+void fit_to_width(t_fdf *fdf)
+{
+    t_vec4 screen_edge = {(float) SCREEN_W - 1, 0, 0};
+    t_vec4 world_screen_edge;
+    mat_vec_multiply(world_screen_edge, fdf->inv_projection, screen_edge);
+    fdf->scale = world_screen_edge[0] / ((float) fdf->max_x);
+    fdf->scale *= 0.7;
 }
 
 int main(int argc, char **argv)
@@ -132,7 +133,8 @@ int main(int argc, char **argv)
     fdf.scale = 0.7;
     resize_points(&fdf, fdf.point_count);
     identity_matrix(fdf.orientation);
-    translate_matrix(fdf.translation, 1, 1, 0);
+    rotation_matrix_x(fdf.orientation, 30 * DEG_TO_RAD);
+
     t_mat4 vp_mat;
     viewport_projection(vp_mat);
 
@@ -143,9 +145,9 @@ int main(int argc, char **argv)
 
     mat_inverse(&fdf.inv_projection, &fdf.projection);
 
-    calculate_transforms(&fdf);
-
     center_to_world(&fdf);
+    fit_to_width(&fdf);
+    calculate_transforms(&fdf);
 
     fdf.mlx = mlx_init();
     if (fdf.mlx == NULL)

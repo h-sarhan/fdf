@@ -207,4 +207,5 @@ void calculate_transforms(t_fdf *fdf)
     mat_multiply(fdf->transform_mat, scale_mat, fdf->transform_mat);
     mat_multiply(fdf->transform_mat, fdf->orientation, fdf->transform_mat);
     mat_multiply(fdf->transform_mat, fdf->translation, fdf->transform_mat);
+    mat_multiply(fdf->transform_mat, fdf->projection, fdf->transform_mat);
 }

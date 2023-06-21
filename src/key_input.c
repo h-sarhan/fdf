@@ -35,9 +35,22 @@ void toggle_keys_held(int key, t_fdf *fdf, bool on_off)
     if (key == KEY_E)
         fdf->keys.e = on_off;
     if (key == KEY_PLUS)
-        fdf->keys.plus = on_off;
+    {
+        fdf->scale += ZOOM_SPEED;
+        bzero(fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
+        calculate_transforms(fdf);
+        draw_points(fdf);
+    }
+    // fdf->keys.plus = on_off;
     if (key == KEY_MINUS)
-        fdf->keys.minus = on_off;
+    {
+        if (fdf->scale > 0.01)
+            fdf->scale -= ZOOM_SPEED;
+        bzero(fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
+        calculate_transforms(fdf);
+        draw_points(fdf);
+    }
+    // fdf->keys.minus = on_off;
     if (key == KEY_SHIFT)
         fdf->keys.shift = on_off;
     if (key == KEY_X)
@@ -78,13 +91,12 @@ int key_release(int key, t_fdf *fdf)
 int render_loop(t_fdf *fdf)
 {
     t_mat4 mat;
-    if (fdf->keys.plus == true)
-        fdf->scale += ZOOM_SPEED;
-    if (fdf->keys.minus == true)
-    {
-        if (fdf->scale > 0.01)
-            fdf->scale -= ZOOM_SPEED;
-    }
+    // if (fdf->keys.plus == true)
+    //     fdf->scale += ZOOM_SPEED;
+    // if (fdf->keys.minus == true)
+    // {
+
+    // }
     if (fdf->keys.w == true)
     {
         translate_matrix(mat, 0, -MOVE_SPEED, 0);
