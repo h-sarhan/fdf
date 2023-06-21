@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 15:08:48 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/06/20 20:23:56 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/21 09:48:41 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int get_b(int trgb)
     return (trgb & 0xFF);
 }
 
-// replace with line clipping algorithm
-void dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2)
+void draw_line(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1,
+               int c2)
 {
     float dy;
     float dx;

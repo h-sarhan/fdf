@@ -6,12 +6,12 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:09:26 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/06/20 20:22:39 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/21 09:47:40 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-// typedef int outCode;
+// typedef float outCode;
 
 typedef enum
 {

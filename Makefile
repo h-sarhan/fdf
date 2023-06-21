@@ -6,7 +6,7 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/06/20 20:15:15 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/06/21 09:34:01 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,12 +31,12 @@ NAME = fdf
 OS := $(shell uname)
 CC = gcc
 ifeq ($(OS),Linux)
-	INC = -Iinclude -Ilibft  -I/usr/include -Imlx_linux
+	INC = -Iinclude -I/usr/include -Imlx_linux
 	OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
 	LINK_FLAGS = -Llib/mlx_linux -lmlx -Imlx_linux -lXext -lX11 -lm -lz
 	MLX = lib/mlx_linux
 else
-	INC = -Iinclude -Ilibft -Imlx
+	INC = -Iinclude -Imlx
 	OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
 	LINK_FLAGS = -Llib/mlx -lmlx -framework OpenGL -framework AppKit
 	MLX = lib/mlx
@@ -68,14 +68,14 @@ db:
 
 clean:
 	-make -C $(MLX) clean
-	-make -C libft clean
+	-make -C lib/libft clean
 	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	rm -f $(NAME) $(LIBFT)
 
 norm:
-	-make -C libft norm
+	-make -C lib/libft norm
 	norminette src include
 
 re: fclean all

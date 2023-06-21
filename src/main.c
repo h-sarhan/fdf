@@ -6,26 +6,28 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/06/20 20:05:06 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/21 09:52:17 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-// TODO: Implement line clipping algorithm
-// TODO: Multi threading
-// TODO: Camera
-// TODO: .OBJ files
-// TODO: THICK lines
-// TODO: Anti-aliased lines
-// TODO: Proper view projection and orthographic projection matrices
-// Page 162 Fundamentals of computer graphics
-// TODO: Fix color gradient
-// 1: https://github.com/VBrazhnik/FdF/wiki/How-to-create-linear-gradient%3F
-// 2: https://stackoverflow.com/questions/22607043/color-gradient-algorithm
 // TODO: Perspective projection
+// TODO: Proper view projection and orthographic projection matrices
+// TODO: Camera
+
+// TODO: .OBJ files
+
+// TODO: THICK Anti-aliased lines
+// https://github.com/jambolo/thick-xiaolin-wu/blob/master/cs/thick-xiaolin-wu.coffee
+
+// ! HARD
 // TODO: Conical projection
 // TODO: Hidden line removal
+// TODO: Multi threading
+// TODO: Triangles
+// TODO: Backface culling
+// TODO: Z-buffer
 
 void draw_points(t_fdf *fdf)
 {
@@ -66,18 +68,18 @@ void draw_points(t_fdf *fdf)
             if (j + 1 < fdf->max_x)
             {
                 int c2 = fdf->points[i * fdf->max_x + j + 1].color;
-                dda(fdf, xys[i * fdf->max_x * 2 + j * 2],
-                    xys[i * fdf->max_x * 2 + (j + 1) * 2],
-                    xys[i * fdf->max_x * 2 + j * 2 + 1],
-                    xys[i * fdf->max_x * 2 + (j + 1) * 2 + 1], c1, c2);
+                draw_line(fdf, xys[i * fdf->max_x * 2 + j * 2],
+                          xys[i * fdf->max_x * 2 + (j + 1) * 2],
+                          xys[i * fdf->max_x * 2 + j * 2 + 1],
+                          xys[i * fdf->max_x * 2 + (j + 1) * 2 + 1], c1, c2);
             }
             if (i + 1 < fdf->max_y)
             {
                 int c2 = fdf->points[(i + 1) * fdf->max_x + j].color;
-                dda(fdf, xys[i * fdf->max_x * 2 + j * 2],
-                    xys[(i + 1) * fdf->max_x * 2 + (j) *2],
-                    xys[i * fdf->max_x * 2 + j * 2 + 1],
-                    xys[(i + 1) * fdf->max_x * 2 + (j) *2 + 1], c1, c2);
+                draw_line(fdf, xys[i * fdf->max_x * 2 + j * 2],
+                          xys[(i + 1) * fdf->max_x * 2 + (j) *2],
+                          xys[i * fdf->max_x * 2 + j * 2 + 1],
+                          xys[(i + 1) * fdf->max_x * 2 + (j) *2 + 1], c1, c2);
             }
         }
     }
