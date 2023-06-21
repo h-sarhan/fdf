@@ -42,14 +42,7 @@ void draw_points(t_fdf *fdf)
     xys = malloc(sizeof(short) * 2 * fdf->point_count);
     if (xys == NULL)
         exit(17);
-    t_mat4 vp_mat;
-    viewport_projection(vp_mat);
 
-    t_mat4 orth_mat;
-    orthographic_projection(orth_mat);
-
-    t_mat4 projection;
-    mat_multiply(projection, vp_mat, orth_mat);
     for (int i = 0; i < fdf->max_y; i++)
     {
         for (int j = 0; j < fdf->max_x; j++)
@@ -57,13 +50,12 @@ void draw_points(t_fdf *fdf)
             point[0] = j - fdf->max_x / 2.0f;
             point[1] = i - fdf->max_y / 2.0f;
 
-            int16_t height = fdf->points[i * fdf->max_x + j].height;
-            point[2] = height;
-            point[3] = 1;
+            point[2] = fdf->points[i * fdf->max_x + j].height;
 
             t_vec4 proj_point;
+            // * Can be optimized to 1 matrix multiplication
             mat_vec_multiply(res, fdf->transform_mat, point);
-            mat_vec_multiply(proj_point, projection, res);
+            mat_vec_multiply(proj_point, fdf->projection, res);
             xys[idx] = (proj_point[0]);
             xys[idx + 1] = (proj_point[1]);
 
@@ -74,8 +66,6 @@ void draw_points(t_fdf *fdf)
     {
         for (int j = 0; j < fdf->max_x; j++)
         {
-            // t_vec4 p1 = {2, 1, 1, 1};
-            // t_vec4 p2 = {2, 1, 1, 1};
             int c1 = fdf->points[i * fdf->max_x + j].color;
             if (j + 1 < fdf->max_x)
             {
@@ -97,6 +87,16 @@ void draw_points(t_fdf *fdf)
     }
     free(xys);
     mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img, 0, 0);
+}
+
+void center_to_world(t_fdf *fdf)
+{
+    t_vec4 screen_center = {(float) SCREEN_W / 2, (float) SCREEN_H / 2, 0};
+
+    t_vec4 world_center;
+    mat_vec_multiply(world_center, fdf->inv_projection, screen_center);
+
+    translate_matrix(fdf->translation, world_center[0], world_center[1], 0);
 }
 
 int main(int argc, char **argv)
@@ -133,10 +133,20 @@ int main(int argc, char **argv)
     resize_points(&fdf, fdf.point_count);
     identity_matrix(fdf.orientation);
     translate_matrix(fdf.translation, 1, 1, 0);
-    // translate_matrix(fdf.translation, (float) fdf.max_x / 2,
-    //                  (float) fdf.max_y / 2, 0);
+    t_mat4 vp_mat;
+    viewport_projection(vp_mat);
+
+    t_mat4 orth_mat;
+    orthographic_projection(orth_mat);
+
+    mat_multiply(fdf.projection, vp_mat, orth_mat);
+
+    mat_inverse(&fdf.inv_projection, &fdf.projection);
 
     calculate_transforms(&fdf);
+
+    center_to_world(&fdf);
+
     fdf.mlx = mlx_init();
     if (fdf.mlx == NULL)
         printf("OOPS\n");

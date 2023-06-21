@@ -21,18 +21,22 @@
 #define RAD_TO_DEG      57.2957795131
 #define DEG_TO_RAD      0.01745329251
 #define MAX_POINT_COUNT 3000
+#define ROT_SPEED       1
+#define MOVE_SPEED      0.05
+#define ZOOM_SPEED      0.01
+#define EPSILON         0.001
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE 100000
+#endif
+
+#define SCREEN_W 1000
+#define SCREEN_H 1000
+
 #ifdef __linux__
 #include "../lib/mlx_linux/mlx.h"
 #else
 #include "../lib/mlx/mlx.h"
 #endif
-
-#ifndef BUFFER_SIZE
-#define BUFFER_SIZE 100000
-#endif
-
-#define SCREEN_W 1300
-#define SCREEN_H 1300
 
 #ifdef __linux__
 #define KEY_ESC         65307
@@ -140,11 +144,6 @@ struct s_point
     int16_t height;
 };
 
-#define ROT_SPEED  4
-#define MOVE_SPEED 0.02
-#define ZOOM_SPEED 0.02
-#define EPSILON    0.001
-
 typedef float t_mat2[2][2];
 typedef float t_mat3[3][3];
 typedef float t_mat4[4][4];
@@ -157,6 +156,8 @@ struct s_fdf
     t_mat4 cam_transform;
     t_mat4 orientation;
     t_mat4 translation;
+    t_mat4 projection;
+    t_mat4 inv_projection;
     t_keys keys;
     t_point *points;
     void *mlx;
@@ -210,5 +211,6 @@ void viewport_projection(t_mat4 mat);
 void orthographic_projection(t_mat4 res);
 void submat4(t_mat3 *res, const t_mat4 *mat, int row, int col);
 double det3(const t_mat3 *mat3);
+void mat_inverse(t_mat4 *res, const t_mat4 *mat);
 
 #endif

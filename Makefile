@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 MATH_SRC = matrix_operations.c matrix_transformations.c vector_arithmetic.c vector_operations.c projections.c
+MATH_SRC += matrix_inverse.c matrix_inverse2.c
 MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
 LINE_DRAWING_SRC = drawing.c clipping.c
@@ -29,15 +30,15 @@ LIBFT = lib/libft/libft.a
 
 NAME = fdf
 OS := $(shell uname)
-CC = gcc
+CC = clang
 ifeq ($(OS),Linux)
-	INC = -Iinclude -I/usr/include -Imlx_linux
-	OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
-	LINK_FLAGS = -Llib/mlx_linux -lmlx -Imlx_linux -lXext -lX11 -lm -lz
+	INC = -Iinclude -I/usr/include -Ilib/mlx_linux
+	OPTIMIZATION_FLAGS = -Ofast -march=native -fno-signed-zeros -funroll-loops
+	LINK_FLAGS = -Llib/mlx_linux -lmlx -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 	MLX = lib/mlx_linux
 else
-	INC = -Iinclude -Imlx
-	OPTIMIZATION_FLAGS = -Ofast -march=native -flto -fno-signed-zeros -funroll-loops
+	INC = -Iinclude -lib/Imlx
+	OPTIMIZATION_FLAGS = -Ofast -march=native -fno-signed-zeros -funroll-loops
 	LINK_FLAGS = -Llib/mlx -lmlx -framework OpenGL -framework AppKit
 	MLX = lib/mlx
 endif
@@ -46,9 +47,9 @@ endif
 CFLAGS = -Wall -Wextra -Werror -march=native -pthread $(INC) \
 			$(OPTIMIZATION_FLAGS) \
 
-
 all:
-	@make -j20 $(NAME)
+	# @make -j20 $(NAME)
+	@make  $(NAME)
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)

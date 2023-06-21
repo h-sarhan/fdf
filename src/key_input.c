@@ -82,7 +82,7 @@ int render_loop(t_fdf *fdf)
         fdf->scale += ZOOM_SPEED;
     if (fdf->keys.minus == true)
     {
-        if (fdf->scale > 0.1)
+        if (fdf->scale > 0.01)
             fdf->scale -= ZOOM_SPEED;
     }
     if (fdf->keys.w == true)

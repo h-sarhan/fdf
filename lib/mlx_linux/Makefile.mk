@@ -36,7 +36,7 @@ SRC	= mlx_init.c mlx_new_window.c mlx_pixel_put.c mlx_loop.c \
 
 OBJ_DIR = obj
 OBJ	= $(addprefix $(OBJ_DIR)/,$(SRC:%.c=%.o))
-CFLAGS	= -Ofast -march=native -flto -fno-signed-zeros -funroll-loops -I$(INC)
+CFLAGS	= -Ofast -march=native -fno-signed-zeros -funroll-loops -I$(INC)
 
 all	: $(NAME)
 
