@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 15:41:22 by mkhan             #+#    #+#             */
-/*   Updated: 2023/06/20 20:02:09 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/21 10:07:43 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,13 +196,6 @@ void rotation_matrix_z(t_mat4 mat, float r)
     mat[3][1] = 0;
     mat[3][2] = 0;
     mat[3][3] = 1;
-}
-
-void cross_product(t_vector res, const t_vector v1, const t_vector v2)
-{
-    res[0] = v1[1] * v2[2] - v1[2] * v2[1];
-    res[1] = v1[2] * v2[0] - v1[0] * v2[2];
-    res[2] = v1[0] * v2[1] - v1[1] * v2[0];
 }
 
 void calculate_transforms(t_fdf *fdf)

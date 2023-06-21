@@ -6,11 +6,11 @@
 #    By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 14:01:09 by hsarhan           #+#    #+#              #
-#    Updated: 2023/06/21 09:34:01 by hsarhan          ###   ########.fr        #
+#    Updated: 2023/06/21 10:30:50 by hsarhan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-MATH_SRC = matrix_operations.c matrix_transformations.c vector_arithmetic.c vector_operations.c
+MATH_SRC = matrix_operations.c matrix_transformations.c vector_arithmetic.c vector_operations.c projections.c
 MATH_SRC := $(addprefix math/, $(MATH_SRC))
 
 LINE_DRAWING_SRC = drawing.c clipping.c

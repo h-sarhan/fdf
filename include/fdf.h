@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:56:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/06/21 09:48:01 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/21 11:04:47 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,6 @@ struct s_keys
     bool z;
 };
 
-typedef float t_vector[4];
-
 typedef struct s_point t_point;
 struct s_point
 {
@@ -143,9 +141,14 @@ struct s_point
 };
 
 #define ROT_SPEED  4
-#define MOVE_SPEED 0.01
-#define ZOOM_SPEED 0.01
+#define MOVE_SPEED 0.02
+#define ZOOM_SPEED 0.02
+#define EPSILON    0.001
+
+typedef float t_mat2[2][2];
+typedef float t_mat3[3][3];
 typedef float t_mat4[4][4];
+typedef float t_vec4[4];
 
 typedef struct s_fdf t_fdf;
 struct s_fdf
@@ -173,20 +176,20 @@ struct s_fdf
 };
 
 void mat_multiply(t_mat4 res, const t_mat4 m1, const t_mat4 m2);
-void mat_vec_multiply(t_vector res, const t_mat4 mat, const t_vector vec);
+void mat_vec_multiply(t_vec4 res, const t_mat4 mat, const t_vec4 vec);
 void identity_matrix(t_mat4 mat);
 void translate_matrix(t_mat4 mat, float x, float y, float z);
 void scaling_matrix(t_mat4 mat, float x, float y, float z);
 void rotation_matrix_x(t_mat4 mat, float r);
 void rotation_matrix_y(t_mat4 mat, float r);
 void rotation_matrix_z(t_mat4 mat, float r);
-void add_vec(t_vector res, const t_vector v1, const t_vector v2);
-void sub_vec(t_vector res, const t_vector v1, const t_vector v2);
-void scale_vec(t_vector res, const t_vector v, float scale);
-void negate_vec(t_vector res, const t_vector v);
-float vec_magnitude(const t_vector vec);
-void normalize_vec(t_vector vec);
-float dot_product(const t_vector v1, const t_vector v2);
+void add_vec(t_vec4 res, const t_vec4 v1, const t_vec4 v2);
+void sub_vec(t_vec4 res, const t_vec4 v1, const t_vec4 v2);
+void scale_vec(t_vec4 res, const t_vec4 v, float scale);
+void negate_vec(t_vec4 res, const t_vec4 v);
+float vec_magnitude(const t_vec4 vec);
+void normalize_vec(t_vec4 vec);
+float dot_product(const t_vec4 v1, const t_vec4 v2);
 
 int read_color(char *buffer, int fd, int *idx);
 
@@ -203,5 +206,9 @@ void draw_points(t_fdf *fdf);
 void draw_line(t_fdf *fdf, float x0, float y0, float x1, float y1, int c1,
                int c2);
 bool clip_line(float *x0, float *y0, float *x1, float *y1);
+void viewport_projection(t_mat4 mat);
+void orthographic_projection(t_mat4 res);
+void submat4(t_mat3 *res, const t_mat4 *mat, int row, int col);
+double det3(const t_mat3 *mat3);
 
 #endif

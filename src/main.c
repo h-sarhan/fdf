@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 00:58:05 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/06/21 09:52:17 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/21 10:57:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 
 void draw_points(t_fdf *fdf)
 {
-    t_vector point;
-    t_vector res;
+    t_vec4 point;
+    t_vec4 res;
 
     int idx;
     short *xys;
@@ -42,20 +42,30 @@ void draw_points(t_fdf *fdf)
     xys = malloc(sizeof(short) * 2 * fdf->point_count);
     if (xys == NULL)
         exit(17);
+    t_mat4 vp_mat;
+    viewport_projection(vp_mat);
+
+    t_mat4 orth_mat;
+    orthographic_projection(orth_mat);
+
+    t_mat4 projection;
+    mat_multiply(projection, vp_mat, orth_mat);
     for (int i = 0; i < fdf->max_y; i++)
     {
         for (int j = 0; j < fdf->max_x; j++)
         {
-            point[0] = (2.0f * j / fdf->max_x - 1.0f);
-            point[1] = (2.0f * i / fdf->max_y - 1.0f);
+            point[0] = j - fdf->max_x / 2.0f;
+            point[1] = i - fdf->max_y / 2.0f;
+
             int16_t height = fdf->points[i * fdf->max_x + j].height;
+            point[2] = height;
+            point[3] = 1;
 
-            point[2] =
-                (height - fdf->min_z) / (float) (fdf->max_z - fdf->min_z);
-
+            t_vec4 proj_point;
             mat_vec_multiply(res, fdf->transform_mat, point);
-            xys[idx] = (res[0]) * SCREEN_W / 2.0f;
-            xys[idx + 1] = (res[1]) * SCREEN_H / 2.0f;
+            mat_vec_multiply(proj_point, projection, res);
+            xys[idx] = (proj_point[0]);
+            xys[idx + 1] = (proj_point[1]);
 
             idx += 2;
         }
@@ -64,6 +74,8 @@ void draw_points(t_fdf *fdf)
     {
         for (int j = 0; j < fdf->max_x; j++)
         {
+            // t_vec4 p1 = {2, 1, 1, 1};
+            // t_vec4 p2 = {2, 1, 1, 1};
             int c1 = fdf->points[i * fdf->max_x + j].color;
             if (j + 1 < fdf->max_x)
             {
@@ -121,14 +133,8 @@ int main(int argc, char **argv)
     resize_points(&fdf, fdf.point_count);
     identity_matrix(fdf.orientation);
     translate_matrix(fdf.translation, 1, 1, 0);
-    // translate_matrix(fdf.translation, 0, 0, 0);
-
-    t_mat4 projection;
-    identity_matrix(projection);
-    rotation_matrix_z(projection, -45 * DEG_TO_RAD);
-    mat_multiply(fdf.orientation, projection, fdf.orientation);
-    rotation_matrix_x(projection, 35.264 * DEG_TO_RAD);
-    mat_multiply(fdf.orientation, projection, fdf.orientation);
+    // translate_matrix(fdf.translation, (float) fdf.max_x / 2,
+    //                  (float) fdf.max_y / 2, 0);
 
     calculate_transforms(&fdf);
     fdf.mlx = mlx_init();

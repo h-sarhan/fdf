@@ -6,7 +6,7 @@
 /*   By: hsarhan <hsarhan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 10:42:19 by hsarhan           #+#    #+#             */
-/*   Updated: 2023/06/20 20:03:54 by hsarhan          ###   ########.fr       */
+/*   Updated: 2023/06/21 10:13:54 by hsarhan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void mat_multiply(t_mat4 res, const t_mat4 m1, const t_mat4 m2)
  * @param mat Matrix to be multiplied
  * @param vec Vector to be multiplied
  */
-void mat_vec_multiply(t_vector res, const t_mat4 mat, const t_vector vec)
+void mat_vec_multiply(t_vec4 res, const t_mat4 mat, const t_vec4 vec)
 {
     res[0] = vec[0] * mat[0][0] + vec[1] * mat[0][1] + vec[2] * mat[0][2] +
              mat[0][3];
