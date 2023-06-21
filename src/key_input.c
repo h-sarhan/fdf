@@ -14,6 +14,7 @@
 
 void toggle_keys_held(int key, t_fdf *fdf, bool on_off)
 {
+
     if (key == KEY_W)
         fdf->keys.w = on_off;
     if (key == KEY_A)
@@ -37,7 +38,7 @@ void toggle_keys_held(int key, t_fdf *fdf, bool on_off)
     if (key == KEY_PLUS)
     {
         fdf->scale += ZOOM_SPEED;
-        bzero(fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
+        bzero(fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp / 8);
         calculate_transforms(fdf);
         draw_points(fdf);
     }
@@ -46,7 +47,7 @@ void toggle_keys_held(int key, t_fdf *fdf, bool on_off)
     {
         if (fdf->scale > 0.01)
             fdf->scale -= ZOOM_SPEED;
-        bzero(fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
+        bzero(fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp / 8);
         calculate_transforms(fdf);
         draw_points(fdf);
     }
@@ -68,6 +69,8 @@ int close_window(t_fdf *fdf)
     // mlx_destroy_window(fdf->mlx, fdf->win);
     // mlx_destroy_display(fdf->mlx);
     free(fdf->mlx);
+    free(fdf->points);
+    free(fdf);
     exit(EXIT_SUCCESS);
     return (0);
 }
@@ -78,6 +81,14 @@ int key_press(int key, t_fdf *fdf)
     if (key == KEY_ESC)
     {
         close_window(fdf);
+    }
+    if (key == KEY_C)
+    {
+        fdf->cam_mode = !fdf->cam_mode;
+        if (fdf->cam_mode == true)
+            printf("Cam ON\n");
+        else
+            printf("Cam OFF\n");
     }
     return (0);
 }
@@ -91,67 +102,111 @@ int key_release(int key, t_fdf *fdf)
 int render_loop(t_fdf *fdf)
 {
     t_mat4 mat;
-    // if (fdf->keys.plus == true)
-    //     fdf->scale += ZOOM_SPEED;
-    // if (fdf->keys.minus == true)
-    // {
+    if (fdf->cam_mode == false)
+    {
+        if (fdf->keys.w == true)
+        {
+            translate_matrix(&mat, 0, -MOVE_SPEED, 0);
+            mat_multiply(&fdf->translation, &mat, &fdf->translation);
+        }
+        if (fdf->keys.s == true)
+        {
+            translate_matrix(&mat, 0, MOVE_SPEED, 0);
+            mat_multiply(&fdf->translation, &mat, &fdf->translation);
+        }
+        if (fdf->keys.q == true)
+        {
+            translate_matrix(&mat, 0, 0, MOVE_SPEED);
+            mat_multiply(&fdf->translation, &mat, &fdf->translation);
+        }
+        if (fdf->keys.e == true)
+        {
+            translate_matrix(&mat, 0, 0, -MOVE_SPEED);
+            mat_multiply(&fdf->translation, &mat, &fdf->translation);
+        }
+        if (fdf->keys.a == true)
+        {
+            translate_matrix(&mat, -MOVE_SPEED, 0, 0);
+            mat_multiply(&fdf->translation, &mat, &fdf->translation);
+        }
+        if (fdf->keys.d == true)
+        {
+            translate_matrix(&mat, MOVE_SPEED, 0, 0);
+            mat_multiply(&fdf->translation, &mat, &fdf->translation);
+        }
+        if (fdf->keys.right == true)
+        {
+            rotation_matrix_y(&mat, ROT_SPEED * DEG_TO_RAD);
+            mat_multiply(&fdf->orientation, &mat, &fdf->orientation);
+        }
+        if (fdf->keys.left == true)
+        {
+            rotation_matrix_y(&mat, -ROT_SPEED * DEG_TO_RAD);
+            mat_multiply(&fdf->orientation, &mat, &fdf->orientation);
+        }
+        if (fdf->keys.up == true)
+        {
+            rotation_matrix_x(&mat, ROT_SPEED * DEG_TO_RAD);
+            mat_multiply(&fdf->orientation, &mat, &fdf->orientation);
+        }
+        if (fdf->keys.down == true)
+        {
+            rotation_matrix_x(&mat, -ROT_SPEED * DEG_TO_RAD);
+            mat_multiply(&fdf->orientation, &mat, &fdf->orientation);
+        }
+    }
+    else
+    {
+        // if (fdf->keys.up == true && fdf->cam_phi > 0.2)
+        //     fdf->cam_phi -= 0.05;
+        // if (fdf->keys.down == true && fdf->cam_phi < M_PI - 0.2)
+        //     fdf->cam_phi += 0.05;
+        if (fdf->keys.up == true)
+            fdf->cam_look[1] += 0.10;
+        if (fdf->keys.down == true)
+            fdf->cam_look[1] -= 0.10;
 
-    // }
-    if (fdf->keys.w == true)
-    {
-        translate_matrix(mat, 0, -MOVE_SPEED, 0);
-        mat_multiply(fdf->translation, mat, fdf->translation);
+        if (fdf->keys.left == true)
+            fdf->cam_look[0] += 0.10;
+        if (fdf->keys.right == true)
+            fdf->cam_look[0] -= 0.10;
+        // if (fdf->keys.up || fdf->keys.left || fdf->keys.right ||
+        // fdf->keys.down)
+        //     sphere_to_xyz(&fdf->cam_look, fdf->cam_phi, fdf->cam_theta, 1);
+
+        if (fdf->keys.w == true)
+        {
+            fdf->cam_pos[2] += 0.001;
+        }
+        if (fdf->keys.s == true)
+        {
+            fdf->cam_pos[2] -= 0.001;
+        }
+
+        if (fdf->keys.q == true)
+        {
+            fdf->cam_pos[1] -= 0.001;
+        }
+        if (fdf->keys.e == true)
+        {
+            fdf->cam_pos[1] += 0.001;
+        }
+
+        if (fdf->keys.a == true)
+        {
+            fdf->cam_pos[0] -= 0.001;
+        }
+        if (fdf->keys.d == true)
+        {
+            fdf->cam_pos[0] += 0.001;
+        }
     }
-    if (fdf->keys.s == true)
-    {
-        translate_matrix(mat, 0, MOVE_SPEED, 0);
-        mat_multiply(fdf->translation, mat, fdf->translation);
-    }
-    if (fdf->keys.q == true)
-    {
-        translate_matrix(mat, 0, 0, MOVE_SPEED);
-        mat_multiply(fdf->translation, mat, fdf->translation);
-    }
-    if (fdf->keys.e == true)
-    {
-        translate_matrix(mat, 0, 0, -MOVE_SPEED);
-        mat_multiply(fdf->translation, mat, fdf->translation);
-    }
-    if (fdf->keys.a == true)
-    {
-        translate_matrix(mat, -MOVE_SPEED, 0, 0);
-        mat_multiply(fdf->translation, mat, fdf->translation);
-    }
-    if (fdf->keys.d == true)
-    {
-        translate_matrix(mat, MOVE_SPEED, 0, 0);
-        mat_multiply(fdf->translation, mat, fdf->translation);
-    }
-    if (fdf->keys.right == true)
-    {
-        rotation_matrix_y(mat, ROT_SPEED * DEG_TO_RAD);
-        mat_multiply(fdf->orientation, mat, fdf->orientation);
-    }
-    if (fdf->keys.left == true)
-    {
-        rotation_matrix_y(mat, -ROT_SPEED * DEG_TO_RAD);
-        mat_multiply(fdf->orientation, mat, fdf->orientation);
-    }
-    if (fdf->keys.up == true)
-    {
-        rotation_matrix_x(mat, ROT_SPEED * DEG_TO_RAD);
-        mat_multiply(fdf->orientation, mat, fdf->orientation);
-    }
-    if (fdf->keys.down == true)
-    {
-        rotation_matrix_x(mat, -ROT_SPEED * DEG_TO_RAD);
-        mat_multiply(fdf->orientation, mat, fdf->orientation);
-    }
+
     if (fdf->keys.w || fdf->keys.a || fdf->keys.s || fdf->keys.d ||
         fdf->keys.left || fdf->keys.right || fdf->keys.up || fdf->keys.down ||
         fdf->keys.minus || fdf->keys.plus || fdf->keys.q || fdf->keys.e)
     {
-        bzero(fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp);
+        bzero(fdf->addr, SCREEN_H * SCREEN_W * fdf->bpp / 8);
         calculate_transforms(fdf);
         draw_points(fdf);
     }

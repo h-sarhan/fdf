@@ -49,7 +49,8 @@ void draw_points(t_fdf *fdf)
             point[0] = j - fdf->max_x / 2.0f;
             point[1] = i - fdf->max_y / 2.0f;
             point[2] = fdf->points[i * fdf->max_x + j].height;
-            mat_vec_multiply(res, fdf->transform_mat, point);
+            point[3] = 1;
+            mat_vec_multiply(&res, &fdf->transform_mat, &point);
             xys[idx] = res[0];
             xys[idx + 1] = res[1];
             idx += 2;
@@ -87,29 +88,38 @@ void center_to_world(t_fdf *fdf)
 {
     t_vec4 screen_center = {(float) SCREEN_W / 2, (float) SCREEN_H / 2, 0};
     t_vec4 world_center;
-    mat_vec_multiply(world_center, fdf->inv_projection, screen_center);
-    translate_matrix(fdf->translation, world_center[0], world_center[1], 0);
+    mat_vec_multiply(&world_center, &fdf->inv_projection, &screen_center);
+    translate_matrix(&fdf->translation, world_center[0], world_center[1], 0);
 }
 
 void fit_to_width(t_fdf *fdf)
 {
     t_vec4 screen_edge = {(float) SCREEN_W - 1, 0, 0};
     t_vec4 world_screen_edge;
-    mat_vec_multiply(world_screen_edge, fdf->inv_projection, screen_edge);
+    mat_vec_multiply(&world_screen_edge, &fdf->inv_projection, &screen_edge);
     fdf->scale = world_screen_edge[0] / ((float) fdf->max_x);
     fdf->scale *= 0.7;
 }
 
 int main(int argc, char **argv)
 {
-    t_fdf fdf;
+    t_fdf *fdf;
     int fd;
 
-    ft_bzero(&fdf, sizeof(t_fdf));
-    fdf.max_size = MAX_POINT_COUNT;
-    fdf.max_z = INT16_MIN;
-    fdf.min_z = INT16_MAX;
-    // fdf.colors[0] = 0xffffff;
+    fdf = ft_calloc(1, sizeof(t_fdf));
+    if (!fdf)
+        exit(1);
+    // fdf->cam_pos[0] = 100;
+    fdf->cam_pos[3] = 1;
+
+    fdf->cam_look[0] = 0;
+    fdf->cam_look[1] = 0;
+    fdf->cam_look[2] = -1;
+    printf("fdf->cam_pos[0] = %f\n", fdf->cam_pos[0]);
+    fdf->max_size = MAX_POINT_COUNT;
+    fdf->max_z = INT16_MIN;
+    fdf->min_z = INT16_MAX;
+    // fdf->colors[0] = 0xffffff;
     if (argc != 2)
     {
         exit(1);
@@ -121,47 +131,46 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    fdf.points = malloc(MAX_POINT_COUNT * sizeof(t_point));
-    if (fdf.points == NULL)
+    fdf->points = malloc(MAX_POINT_COUNT * sizeof(t_point));
+    if (fdf->points == NULL)
         exit(!printf("FAILED TO MALLOC\n"));
-    parse_map(&fdf, fd);
-    fdf.max_y = fdf.point_count / fdf.max_x;
-    if (fdf.points == NULL)
+    parse_map(fdf, fd);
+    fdf->max_y = fdf->point_count / fdf->max_x;
+    if (fdf->points == NULL)
         exit(!printf("FAILED TO MALLOC\n"));
     close(fd);
-    // fdf.scale = fdf.max;
-    fdf.scale = 0.7;
-    resize_points(&fdf, fdf.point_count);
-    identity_matrix(fdf.orientation);
-    rotation_matrix_x(fdf.orientation, 30 * DEG_TO_RAD);
+    // fdf->scale = fdf->max;
+    // fdf->scale = 0.7;
+    resize_points(fdf, fdf->point_count);
+    identity_matrix(&fdf->orientation);
+    identity_matrix(&fdf->translation);
+    rotation_matrix_x(&fdf->orientation, 30 * DEG_TO_RAD);
 
-    t_mat4 vp_mat;
-    viewport_projection(vp_mat);
+    fdf->scale = 1;
+    // fdf->cam_theta =
+    //     atan2(fdf->cam_look[2] / fdf->cam_look[0], fdf->cam_look[0]);
+    // fdf->cam_phi = acos(fdf->cam_look[1]);
+    // sphere_to_xyz(&fdf->cam_look, fdf->cam_phi, fdf->cam_theta, 1);
+    calculate_transforms(fdf);
+    // center_to_world(fdf);
+    // fit_to_width(fdf);
+    // calculate_transforms(fdf);
 
-    t_mat4 orth_mat;
-    orthographic_projection(orth_mat);
-
-    mat_multiply(fdf.projection, vp_mat, orth_mat);
-
-    mat_inverse(&fdf.inv_projection, &fdf.projection);
-
-    center_to_world(&fdf);
-    fit_to_width(&fdf);
-    calculate_transforms(&fdf);
-
-    fdf.mlx = mlx_init();
-    if (fdf.mlx == NULL)
+    fdf->mlx = mlx_init();
+    if (fdf->mlx == NULL)
+    {
         printf("OOPS\n");
-    fdf.win = mlx_new_window(fdf.mlx, SCREEN_W, SCREEN_H, "FDF");
-    fdf.img = mlx_new_image(fdf.mlx, SCREEN_W, SCREEN_H);
-    fdf.addr =
-        mlx_get_data_addr(fdf.img, &fdf.bpp, &fdf.line_size, &fdf.endian);
-    fdf.bpp /= 8;
+        exit(1);
+    }
+    fdf->win = mlx_new_window(fdf->mlx, SCREEN_W, SCREEN_H, "FDF");
+    fdf->img = mlx_new_image(fdf->mlx, SCREEN_W, SCREEN_H);
+    fdf->addr =
+        mlx_get_data_addr(fdf->img, &fdf->bpp, &fdf->line_size, &fdf->endian);
 
-    draw_points(&fdf);
-    mlx_hook(fdf.win, 2, (1L << 0), key_press, &fdf);
-    mlx_hook(fdf.win, 3, (1L << 1), key_release, &fdf);
-    mlx_loop_hook(fdf.mlx, render_loop, &fdf);
-    mlx_loop(fdf.mlx);
-    free(fdf.points);
+    draw_points(fdf);
+    mlx_hook(fdf->win, 2, (1L << 0), key_press, fdf);
+    mlx_hook(fdf->win, 3, (1L << 1), key_release, fdf);
+    mlx_loop_hook(fdf->mlx, render_loop, fdf);
+    mlx_loop(fdf->mlx);
+    // free(fdf->points);
 }

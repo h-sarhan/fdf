@@ -44,8 +44,8 @@ else
 endif
 
 
-CFLAGS = -Wall -Wextra -Werror -march=native -pthread $(INC) \
-			$(OPTIMIZATION_FLAGS) \
+CFLAGS = -Wall -Wextra -Werror -g3 -fno-omit-frame-pointer -fsanitize=address -pthread $(INC) \
+			# $(OPTIMIZATION_FLAGS) \
 
 all:
 	# @make -j20 $(NAME)

@@ -64,7 +64,8 @@ void draw_line(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1,
     while (steps > 0)
     {
         *(unsigned int *) (fdf->addr + (int) ((int) y1 * fdf->line_size +
-                                              (int) x1 * fdf->bpp)) = r | g | b;
+                                              (int) x1 * fdf->bpp / 8)) =
+            r | g | b;
         y1 += dy;
         x1 += dx;
         r += dr;

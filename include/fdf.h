@@ -29,8 +29,8 @@
 #define BUFFER_SIZE 100000
 #endif
 
-#define SCREEN_W 1000
-#define SCREEN_H 1000
+#define SCREEN_W 700
+#define SCREEN_H 700
 
 #ifdef __linux__
 #include "../lib/mlx_linux/mlx.h"
@@ -160,6 +160,11 @@ struct s_fdf
     t_mat4 inv_projection;
     t_keys keys;
     t_point *points;
+    t_vec4 cam_look;
+    t_vec4 cam_pos;
+    float cam_theta;
+    float cam_phi;
+    bool cam_mode;
     void *mlx;
     void *win;
     void *img;
@@ -176,21 +181,21 @@ struct s_fdf
     float scale;
 };
 
-void mat_multiply(t_mat4 res, const t_mat4 m1, const t_mat4 m2);
-void mat_vec_multiply(t_vec4 res, const t_mat4 mat, const t_vec4 vec);
-void identity_matrix(t_mat4 mat);
-void translate_matrix(t_mat4 mat, float x, float y, float z);
-void scaling_matrix(t_mat4 mat, float x, float y, float z);
-void rotation_matrix_x(t_mat4 mat, float r);
-void rotation_matrix_y(t_mat4 mat, float r);
-void rotation_matrix_z(t_mat4 mat, float r);
-void add_vec(t_vec4 res, const t_vec4 v1, const t_vec4 v2);
-void sub_vec(t_vec4 res, const t_vec4 v1, const t_vec4 v2);
-void scale_vec(t_vec4 res, const t_vec4 v, float scale);
-void negate_vec(t_vec4 res, const t_vec4 v);
-float vec_magnitude(const t_vec4 vec);
-void normalize_vec(t_vec4 vec);
-float dot_product(const t_vec4 v1, const t_vec4 v2);
+void mat_multiply(t_mat4 *res, const t_mat4 *m1, const t_mat4 *m2);
+void mat_vec_multiply(t_vec4 *res, const t_mat4 *mat, const t_vec4 *vec);
+void identity_matrix(t_mat4 *mat);
+void translate_matrix(t_mat4 *mat, float x, float y, float z);
+void scaling_matrix(t_mat4 *mat, float x, float y, float z);
+void rotation_matrix_x(t_mat4 *mat, float r);
+void rotation_matrix_y(t_mat4 *mat, float r);
+void rotation_matrix_z(t_mat4 *mat, float r);
+void add_vec(t_vec4 *res, const t_vec4 *v1, const t_vec4 *v2);
+void sub_vec(t_vec4 *res, const t_vec4 *v1, const t_vec4 *v2);
+void scale_vec(t_vec4 *res, const t_vec4 *v, float scale);
+void negate_vec(t_vec4 *res, const t_vec4 *v);
+float vec_magnitude(const t_vec4 *vec);
+void normalize_vec(t_vec4 *vec);
+float dot_product(const t_vec4 *v1, const t_vec4 *v2);
 
 int read_color(char *buffer, int fd, int *idx);
 
@@ -203,14 +208,16 @@ int key_press(int key, t_fdf *fdf);
 int key_release(int key, t_fdf *fdf);
 int render_loop(t_fdf *fdf);
 void draw_points(t_fdf *fdf);
-// void dda(t_fdf *fdf, float x1, float x2, float y1, float y2, int c1, int c2);
 void draw_line(t_fdf *fdf, float x0, float y0, float x1, float y1, int c1,
                int c2);
 bool clip_line(float *x0, float *y0, float *x1, float *y1);
-void viewport_projection(t_mat4 mat);
-void orthographic_projection(t_mat4 res);
+void viewport_projection(t_mat4 *mat);
+void orthographic_projection(t_mat4 *res);
 void submat4(t_mat3 *res, const t_mat4 *mat, int row, int col);
 double det3(const t_mat3 *mat3);
 void mat_inverse(t_mat4 *res, const t_mat4 *mat);
+void cross_product(t_vec4 *res, const t_vec4 *v1, const t_vec4 *v2);
+void camera_projection(t_mat4 *res, t_vec4 *origin, t_vec4 *up, t_vec4 *look);
+void sphere_to_xyz(t_vec4 *vec, double phi, double theta, double r);
 
 #endif
