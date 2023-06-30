@@ -23,7 +23,7 @@
 // ! HARD
 // TODO: Conical projection
 // TODO: Hidden line removal
-// TODO: Multi threading
+// TODO: Multi threading https://nachtimwald.com/2019/04/12/thread-pool-in-c/
 // TODO: Triangles
 // TODO: Backface culling
 // TODO: Z-buffer
